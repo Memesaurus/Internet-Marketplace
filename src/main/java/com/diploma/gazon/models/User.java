@@ -1,7 +1,7 @@
 package com.diploma.gazon.models;
 
+import com.diploma.gazon.models.Member.Member;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @EqualsAndHashCode(callSuper = true)

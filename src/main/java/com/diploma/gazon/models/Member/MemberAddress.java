@@ -1,6 +1,8 @@
-package com.diploma.gazon.models;
+package com.diploma.gazon.models.Member;
 
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class MemberAddress {

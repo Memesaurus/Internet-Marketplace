@@ -1,11 +1,11 @@
-package com.diploma.gazon.models;
+package com.diploma.gazon.models.Product;
 
 import com.diploma.gazon.exceptions.NotFoundException;
+import com.diploma.gazon.models.User;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
