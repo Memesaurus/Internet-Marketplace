@@ -1,10 +1,11 @@
 package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.AuthDTO;
-import com.diploma.gazon.models.CompanyUser;
-import com.diploma.gazon.models.Member.Member;
-import com.diploma.gazon.models.User;
-import com.diploma.gazon.services.MemberService;
+import com.diploma.gazon.models.CompanyMember;
+import com.diploma.gazon.models.Member;
+import com.diploma.gazon.models.User.User;
+import com.diploma.gazon.models.User.UserRole;
+import com.diploma.gazon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,25 +15,25 @@ import java.util.List;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
     @Autowired
-    private MemberService<Member> memberService;
+    private UserService<User> userService;
 
     @GetMapping
-    public List<Member> getMembers() {
-        return memberService.getAllMembers();
+    public List<User> getUsers() {
+        return userService.getAllUsers();
     }
 
     @PostMapping("/login")
     public String authenticate(@RequestBody AuthDTO authDTO) {
-        return memberService.authenticate(authDTO);
+        return userService.authenticate(authDTO);
     }
 
-    @PostMapping("/register/user")
-    public String addUser(@RequestBody User user) {
-        return memberService.addMember(user);
+    @PostMapping("/register/member")
+    public String addMember(@RequestBody Member member) {
+        return userService.addUser(member, UserRole.MEMBER);
     }
 
     @PostMapping("/register/company")
-    public String addCompany(@RequestBody CompanyUser companyUser) {
-        return memberService.addMember(companyUser);
+    public String addCompany(@RequestBody CompanyMember companyMember) {
+        return userService.addUser(companyMember, UserRole.COMPANY);
     }
 }

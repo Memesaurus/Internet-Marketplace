@@ -1,12 +1,9 @@
 package com.diploma.gazon.config.jwt;
 
-import com.diploma.gazon.models.Member.Member;
-import com.diploma.gazon.services.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        if (!jwtService.isTokenValid(webToken, userDetails)) {
+        if (Boolean.FALSE.equals(jwtService.isTokenValid(webToken, userDetails))) {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(userDetails,
                             null,

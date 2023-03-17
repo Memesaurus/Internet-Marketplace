@@ -1,9 +1,8 @@
 package com.diploma.gazon.config;
 
 import com.diploma.gazon.exceptions.NotFoundException;
-import com.diploma.gazon.models.Member.Member;
-import com.diploma.gazon.repositories.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.diploma.gazon.models.User.User;
+import com.diploma.gazon.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AppConfig {
-    private MemberRepository<Member> memberRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -24,16 +22,16 @@ public class AppConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(MemberRepository<Member> memberRepository) {
+    public AuthenticationProvider authenticationProvider(UserRepository<User> userRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService(memberRepository));
+        authProvider.setUserDetailsService(userDetailsService(userRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
-    public UserDetailsService userDetailsService(MemberRepository<Member> memberRepository) {
-        return username -> this.memberRepository.findByUsername(username)
+    public UserDetailsService userDetailsService(UserRepository<User> userRepository) {
+        return username -> userRepository.findByUsername(username)
                 .orElseThrow(NotFoundException::new);
     }
 

@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final Integer TOKEN_EXPIRATION = 1000 * 64 * 24; // 24H
+    private static final Integer TOKEN_EXPIRATION = 1000 * 60 * 60 * 24; // 24H
     @Value("${encryption.key}")
     private String key;
 
@@ -37,7 +37,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(msNow)
                 .setExpiration(msExpiration)
-                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 

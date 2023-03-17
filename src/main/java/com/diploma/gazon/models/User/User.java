@@ -1,4 +1,4 @@
-package com.diploma.gazon.models.Member;
+package com.diploma.gazon.models.User;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -9,14 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Document(collection = "members")
-public abstract class Member implements UserDetails {
+public abstract class User implements UserDetails {
     public static final PasswordEncoder encoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
@@ -27,9 +26,9 @@ public abstract class Member implements UserDetails {
     private String email;
 
     private Boolean isEnabled;
-    private Role role;
+    private UserRole userRole;
 
-    private MemberAdditionalInfo additionalInfo;
+    private UserAdditionalInfo additionalInfo;
 
     public void encodePassword() {
         this.password = encoder.encode(this.password);
@@ -37,7 +36,7 @@ public abstract class Member implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(userRole.name()));
     }
 
     @Override
