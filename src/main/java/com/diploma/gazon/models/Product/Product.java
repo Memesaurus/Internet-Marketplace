@@ -50,8 +50,8 @@ public class Product {
         this.reviews = new ArrayList<>();
     }
 
-    public synchronized void addReview(Review review, User user) {
-        if (Boolean.TRUE.equals(reviewExistsByUsername(user.getUsername()))) {
+    public synchronized void addReview(Review review) {
+        if (reviewExistsByUsername(review.getAuthorUsername())) {
             throw new AlreadyExistsException("User has already reviewed this product");
         }
 
@@ -63,28 +63,23 @@ public class Product {
         return findReviewByUsername(username).isPresent();
     }
 
-    public synchronized void changeReview(User user, String message, Float rating) {
+    public synchronized void changeReviewOfUser(User user, String body, Float rating) {
         Review review = getReviewByUsername(user.getUsername());
 
-        changeReview(review, message, rating);
+        String newBody = defaultIfNull(body, review.getBody());
+        Float newRating = defaultIfNull(rating, review.getRating());
+
+        changeReviewOfUser(review, newBody, newRating);
     }
 
-    public synchronized void changeReview(User user, String message) {
-        Review review = getReviewByUsername(user.getUsername());
-
-        changeReview(review, message, review.getRating());
+    private <T> T defaultIfNull(T value, T defaultValue) {
+        return value == null ? defaultValue : value;
     }
 
-    public synchronized void changeReview(User user, Float rating) {
-        Review review = getReviewByUsername(user.getUsername());
-
-        changeReview(review, review.getMessage(), rating);
-    }
-
-    private synchronized void changeReview(Review review, String message, Float rating) {
+    private synchronized void changeReviewOfUser(Review review, String message, Float rating) {
         Float previousRating = review.getRating();
 
-        review.setMessage(message);
+        review.setBody(message);
         review.setRating(rating);
 
         if (!Objects.equals(rating, previousRating)) {

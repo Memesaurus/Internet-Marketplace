@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -46,7 +45,7 @@ public class UserService<T extends User> {
     }
 
     public String addUser(T user, UserRole role) {
-        if (Boolean.TRUE.equals(isNewUserRoleAdmin(user.getUserRole()))) {
+        if (Boolean.TRUE.equals(isUserRoleAdmin(user.getUserRole()))) {
             throw new RoleNotAllowedException();
         }
 
@@ -64,7 +63,7 @@ public class UserService<T extends User> {
         return jwtService.generateToken(user);
     }
 
-    public Boolean isNewUserRoleAdmin(UserRole userRole) {
+    public Boolean isUserRoleAdmin(UserRole userRole) {
         return userRole == UserRole.ADMIN;
     }
 

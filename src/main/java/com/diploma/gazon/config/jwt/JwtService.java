@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final Integer TOKEN_EXPIRATION = 1000 * 60 * 60 * 24; // 24H
+    private static final Integer TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24h
     @Value("${encryption.key}")
     private String key;
 
@@ -29,7 +29,7 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails) {
         Date msNow = new Date(System.currentTimeMillis());
-        Date msExpiration = new Date(System.currentTimeMillis() + TOKEN_EXPIRATION);
+        Date msExpiration = new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME);
 
         return Jwts
                 .builder()

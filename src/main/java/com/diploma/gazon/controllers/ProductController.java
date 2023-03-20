@@ -3,6 +3,7 @@ package com.diploma.gazon.controllers;
 import com.diploma.gazon.DTO.ProductDTO;
 import com.diploma.gazon.DTO.ReviewDTO;
 import com.diploma.gazon.models.Product.Product;
+import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,19 @@ public class ProductController {
         productService.addProduct(productDTO);
     }
 
-    @PostMapping("/{id}")
-    public void addReview(@RequestBody ReviewDTO reviewDTO) {
-        //PlaceHolder
+    @GetMapping("/{productId}/reviews")
+    public List<Review> getReviewsOfProduct(@PathVariable String productId) {
+        return productService.getReviewsOfProduct(productId);
     }
+
+    @PostMapping("/{productId}/reviews")
+    public void addReview(@PathVariable String productId, @RequestBody ReviewDTO reviewDTO) {
+        productService.addReviewToProduct(productId, reviewDTO);
+    }
+
+    @PatchMapping("/{productId}/reviews")
+    public void patchReview(@PathVariable String productId, @RequestBody ReviewDTO reviewDTO) {
+        productService.patchReview(productId, reviewDTO);
+    }
+
 }
