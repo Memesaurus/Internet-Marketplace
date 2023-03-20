@@ -51,7 +51,7 @@ public class ProductService {
                 productDTO.description,
                 productDTO.price,
                 productDTO.tags,
-                (CompanyMember) currentUser
+                currentUser
         );
 
         productRepository.save(product);
@@ -68,7 +68,7 @@ public class ProductService {
         Review newReview = new Review(
                 reviewDTO.rating,
                 reviewDTO.body,
-                (Member) currentUser
+                currentUser
         );
 
         product.addReview(newReview);

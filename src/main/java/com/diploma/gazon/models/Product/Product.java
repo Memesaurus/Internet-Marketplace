@@ -30,7 +30,7 @@ public class Product {
     private List<Review> reviews;
 
     @DBRef
-    private CompanyMember owner;
+    private User owner;
 
     private List<String> tags;
 
@@ -39,7 +39,7 @@ public class Product {
             String description,
             BigDecimal price,
             List<String> tags,
-            CompanyMember owner) {
+            User owner) {
         this.name = name;
         this.description = description;
         this.price = price;

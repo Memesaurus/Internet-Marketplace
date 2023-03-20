@@ -14,9 +14,9 @@ public class Review {
     private Float rating;
     private String body;
     @DBRef
-    private Member author;
+    private User author;
 
-    public Review(Float rating, String body, Member author) {
+    public Review(Float rating, String body, User author) {
         this.id = new ObjectId().toString();
         this.rating = rating;
         this.body = body;

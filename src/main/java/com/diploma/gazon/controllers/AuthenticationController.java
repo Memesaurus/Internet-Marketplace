@@ -1,6 +1,7 @@
 package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.AuthDTO;
+import com.diploma.gazon.models.AdministratorMember;
 import com.diploma.gazon.models.CompanyMember;
 import com.diploma.gazon.models.Member;
 import com.diploma.gazon.models.User.User;
@@ -35,5 +36,10 @@ public class AuthenticationController {
     @PostMapping("/register/company")
     public String addCompany(@RequestBody CompanyMember companyMember) {
         return userService.addUser(companyMember, UserRole.COMPANY);
+    }
+
+    @PostMapping("/register/admin")
+    public String addAdministrator(@RequestBody AdministratorMember administratorMember) {
+        return userService.addUser(administratorMember, UserRole.ADMIN);
     }
 }

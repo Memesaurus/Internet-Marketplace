@@ -45,7 +45,7 @@ public class UserService<T extends User> {
     }
 
     public String addUser(T user, UserRole role) {
-        if (Boolean.TRUE.equals(isUserRoleAdmin(user.getUserRole()))) {
+        if (isUserRoleAdmin(user.getUserRole()) && isLoggedInUserAdmin()) {
             throw new RoleNotAllowedException();
         }
 
@@ -61,6 +61,14 @@ public class UserService<T extends User> {
         }
 
         return jwtService.generateToken(user);
+    }
+
+    private Boolean isLoggedInUserAdmin() {
+        if (getCurrentUser() == null) {
+            return false;
+        }
+
+        return isUserRoleAdmin(getCurrentUser().getUserRole());
     }
 
     public Boolean isUserRoleAdmin(UserRole userRole) {
