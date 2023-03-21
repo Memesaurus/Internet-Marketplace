@@ -2,12 +2,8 @@ package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.AuthDTO;
 import com.diploma.gazon.DTO.NewUserDTO;
-import com.diploma.gazon.models.AdministratorMember;
-import com.diploma.gazon.models.CompanyMember;
-import com.diploma.gazon.models.Member;
 import com.diploma.gazon.models.User.User;
-import com.diploma.gazon.models.User.UserRole;
-import com.diploma.gazon.services.UserService;
+import com.diploma.gazon.services.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public String addAdministrator(@RequestBody NewUserDTO newUserDTO) {
+    public String addUser(@RequestBody NewUserDTO newUserDTO) {
         return userService.addUser(newUserDTO);
     }
 }

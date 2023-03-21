@@ -9,6 +9,7 @@ import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.repositories.ProductRepository;
+import com.diploma.gazon.services.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

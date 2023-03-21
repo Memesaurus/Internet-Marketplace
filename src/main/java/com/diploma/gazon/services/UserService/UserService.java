@@ -1,4 +1,4 @@
-package com.diploma.gazon.services;
+package com.diploma.gazon.services.UserService;
 
 import com.diploma.gazon.DTO.AuthDTO;
 import com.diploma.gazon.DTO.NewUserDTO;
@@ -38,13 +38,6 @@ public class UserService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public User getCurrentUser() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-
-        return (User) authentication.getPrincipal();
-    }
-
     public String addUser(NewUserDTO newUserDTO) {
         UserRole role = newUserDTO.getRole();
 
@@ -52,7 +45,7 @@ public class UserService {
             throw new RoleNotAllowedException();
         }
 
-        //TODO add mail confirmation
+        //TODO add mail confirmation (requires some google authorization thingamajig)
         User newUser = UserFactory.getUser(role, newUserDTO);
 
         try {
@@ -65,11 +58,20 @@ public class UserService {
     }
 
     private Boolean isLoggedInUserAdmin() {
-        if (getCurrentUser() == null) {
+        User currentUser = getCurrentUser();
+
+        if (currentUser == null) {
             return false;
         }
 
-        return isUserRoleAdmin(getCurrentUser().getUserRole());
+        return isUserRoleAdmin(currentUser.getUserRole());
+    }
+
+    public User getCurrentUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+
+        return (User) authentication.getPrincipal();
     }
 
     public Boolean isUserRoleAdmin(UserRole userRole) {

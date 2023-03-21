@@ -3,6 +3,7 @@ package com.diploma.gazon.config;
 import com.diploma.gazon.config.jwt.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,8 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/product/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -1,4 +1,4 @@
-package com.diploma.gazon.services;
+package com.diploma.gazon.services.UserService;
 
 import com.diploma.gazon.DTO.NewUserDTO;
 import com.diploma.gazon.exceptions.RoleNotAllowedException;
