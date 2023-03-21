@@ -29,18 +29,8 @@ public class AuthenticationController {
         return userService.authenticate(authDTO);
     }
 
-    @PostMapping("/register/member")
-    public String addMember(@RequestBody NewUserDTO newUserDTO) {
-        return userService.addUser(newUserDTO, UserRole.MEMBER);
-    }
-
-    @PostMapping("/register/company")
-    public String addCompany(@RequestBody NewUserDTO newUserDTO) {
-        return userService.addUser(newUserDTO, UserRole.COMPANY);
-    }
-
-    @PostMapping("/register/admin")
+    @PostMapping("/register")
     public String addAdministrator(@RequestBody NewUserDTO newUserDTO) {
-        return userService.addUser(newUserDTO, UserRole.ADMIN);
+        return userService.addUser(newUserDTO);
     }
 }

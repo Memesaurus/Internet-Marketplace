@@ -24,7 +24,7 @@ public interface UserFactory {
                         dto.getUserAdditionalInfo(),
                         dto.getName(),
                         dto.getSurname(),
-                        dto.getMiddlename(),
+                        dto.getMiddleName(),
                         dto.getAge());
             }
             case COMPANY -> {

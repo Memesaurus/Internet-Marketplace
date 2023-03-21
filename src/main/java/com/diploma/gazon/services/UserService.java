@@ -45,7 +45,9 @@ public class UserService {
         return (User) authentication.getPrincipal();
     }
 
-    public String addUser(NewUserDTO newUserDTO, UserRole role) {
+    public String addUser(NewUserDTO newUserDTO) {
+        UserRole role = newUserDTO.getRole();
+
         if (isUserRoleAdmin(role) && isLoggedInUserAdmin()) {
             throw new RoleNotAllowedException();
         }
