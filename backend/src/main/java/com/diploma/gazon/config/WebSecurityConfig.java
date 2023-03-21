@@ -20,6 +20,7 @@ public class WebSecurityConfig {
                                     AuthenticationProvider authenticationProvider) throws Exception {
         http
                 .csrf().disable()
+                .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
                 .permitAll()

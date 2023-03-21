@@ -17,7 +17,6 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    //Test
     @Autowired
     private ProductRepository productRepository;
     @Autowired

@@ -1,26 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from "axios";
+import React from "react";
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  const logIn = () => {
+    axios
+      .post("http://localhost:8080/api/auth/login", {
+        username: "admin",
+        password: "admin",
+      })
+      .then(
+        (response) =>
+          (axios.defaults.headers.common["Authorization"] = `Bearer ${response.data}`)
+      );
+  };
+
+  const postData = () => {
+    axios.post(
+      "http://localhost:8080/api/product/6414d0c1d50083306a0fe6a5/reviews",
+      {
+        rating: 2.5,
+        body: "Жестко"
+      }
+    );
+  };
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={logIn}></button>
+        <button onClick={postData}></button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -29,7 +41,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
