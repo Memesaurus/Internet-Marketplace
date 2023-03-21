@@ -22,7 +22,7 @@ public class AppConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserRepository<User> userRepository) {
+    public AuthenticationProvider authenticationProvider(UserRepository userRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService(userRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -30,7 +30,7 @@ public class AppConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository<User> userRepository) {
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> userRepository.findByUsername(username)
                 .orElseThrow(NotFoundException::new);
     }

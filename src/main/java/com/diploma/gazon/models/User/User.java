@@ -1,6 +1,9 @@
 package com.diploma.gazon.models.User;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +16,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Document(collection = "members")
 public abstract class User implements UserDetails {
     public static final PasswordEncoder encoder =
@@ -24,14 +29,36 @@ public abstract class User implements UserDetails {
     private String username;
     private String password;
     private String email;
-
     private Boolean isEnabled;
     private UserRole userRole;
 
     private UserAdditionalInfo additionalInfo;
 
-    public void encodePassword() {
-        this.password = encoder.encode(this.password);
+    protected User(UserCredentials credentials,
+                    UserRole userRole,
+                    UserAdditionalInfo additionalInfo) {
+        this(credentials.getUsername(),
+                credentials.getPassword(),
+                credentials.getEmail(),
+                userRole,
+                additionalInfo);
+    }
+
+    protected User(String username,
+                String password,
+                String email,
+                UserRole userRole,
+                UserAdditionalInfo additionalInfo) {
+        this.username = username;
+        this.password = encodePassword(password);
+        this.email = email;
+        this.isEnabled = true;
+        this.userRole = userRole;
+        this.additionalInfo = additionalInfo;
+    }
+
+    private String encodePassword(String password) {
+        return encoder.encode(password);
     }
 
     @Override

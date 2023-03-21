@@ -1,6 +1,7 @@
 package com.diploma.gazon.services;
 
 import com.diploma.gazon.DTO.AuthDTO;
+import com.diploma.gazon.DTO.NewUserDTO;
 import com.diploma.gazon.config.jwt.JwtService;
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
@@ -20,19 +21,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService<T extends User> {
+public class UserService {
     @Autowired
-    private UserRepository<T> userRepository;
+    private UserRepository userRepository;
     @Autowired
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public List<T> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public T getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(NotFoundException::new);
     }
@@ -44,23 +45,21 @@ public class UserService<T extends User> {
         return (User) authentication.getPrincipal();
     }
 
-    public String addUser(T user, UserRole role) {
-        if (isUserRoleAdmin(user.getUserRole()) && isLoggedInUserAdmin()) {
+    public String addUser(NewUserDTO newUserDTO, UserRole role) {
+        if (isUserRoleAdmin(role) && isLoggedInUserAdmin()) {
             throw new RoleNotAllowedException();
         }
 
-        try {
-            user.encodePassword();
-            // TODO add mail confirmation
-            user.setIsEnabled(true);
-            user.setUserRole(role);
+        //TODO add mail confirmation
+        User newUser = UserFactory.getUser(role, newUserDTO);
 
-            userRepository.save(user);
+        try {
+            userRepository.save(newUser);
         } catch (DuplicateKeyException exception) {
             throw new AlreadyExistsException("User already exists");
         }
 
-        return jwtService.generateToken(user);
+        return jwtService.generateToken(newUser);
     }
 
     private Boolean isLoggedInUserAdmin() {
@@ -78,12 +77,12 @@ public class UserService<T extends User> {
     public String authenticate(AuthDTO authDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authDTO.username,
-                        authDTO.password
+                        authDTO.getUsername(),
+                        authDTO.getPassword()
                 )
         );
 
-        User authenticatedUser = userRepository.findByUsername(authDTO.username)
+        User authenticatedUser = userRepository.findByUsername(authDTO.getUsername())
                 .orElseThrow(NotFoundException::new);
 
         return jwtService.generateToken(authenticatedUser);

@@ -5,7 +5,6 @@ import com.diploma.gazon.DTO.ReviewDTO;
 import com.diploma.gazon.exceptions.NotCompanyException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.models.CompanyMember;
-import com.diploma.gazon.models.Member;
 import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.models.User.User;
@@ -20,7 +19,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private UserService<User> userService;
+    private UserService userService;
 
     public List<Product> getProductList() {
         return productRepository.findAll();
@@ -47,10 +46,10 @@ public class ProductService {
 
         // TODO add mapstruct to project
         Product product = new Product(
-                productDTO.name,
-                productDTO.description,
-                productDTO.price,
-                productDTO.tags,
+                productDTO.getName(),
+                productDTO.getDescription(),
+                productDTO.getPrice(),
+                productDTO.getTags(),
                 currentUser
         );
 
@@ -66,8 +65,8 @@ public class ProductService {
         }
 
         Review newReview = new Review(
-                reviewDTO.rating,
-                reviewDTO.body,
+                reviewDTO.getRating(),
+                reviewDTO.getBody(),
                 currentUser
         );
 
@@ -90,7 +89,7 @@ public class ProductService {
         Product product = getOrElseThrow(productId);
         User currentUser = userService.getCurrentUser();
 
-        product.changeReviewOfUser(currentUser, reviewDTO.body, reviewDTO.rating);
+        product.changeReviewOfUser(currentUser, reviewDTO.getBody(), reviewDTO.getRating());
         productRepository.save(product);
     }
 

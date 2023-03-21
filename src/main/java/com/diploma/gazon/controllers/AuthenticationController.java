@@ -1,6 +1,7 @@
 package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.AuthDTO;
+import com.diploma.gazon.DTO.NewUserDTO;
 import com.diploma.gazon.models.AdministratorMember;
 import com.diploma.gazon.models.CompanyMember;
 import com.diploma.gazon.models.Member;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
     @Autowired
-    private UserService<User> userService;
+    private UserService userService;
 
     @GetMapping
     public List<User> getUsers() {
@@ -29,17 +30,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register/member")
-    public String addMember(@RequestBody Member member) {
-        return userService.addUser(member, UserRole.MEMBER);
+    public String addMember(@RequestBody NewUserDTO newUserDTO) {
+        return userService.addUser(newUserDTO, UserRole.MEMBER);
     }
 
     @PostMapping("/register/company")
-    public String addCompany(@RequestBody CompanyMember companyMember) {
-        return userService.addUser(companyMember, UserRole.COMPANY);
+    public String addCompany(@RequestBody NewUserDTO newUserDTO) {
+        return userService.addUser(newUserDTO, UserRole.COMPANY);
     }
 
     @PostMapping("/register/admin")
-    public String addAdministrator(@RequestBody AdministratorMember administratorMember) {
-        return userService.addUser(administratorMember, UserRole.ADMIN);
+    public String addAdministrator(@RequestBody NewUserDTO newUserDTO) {
+        return userService.addUser(newUserDTO, UserRole.ADMIN);
     }
 }
