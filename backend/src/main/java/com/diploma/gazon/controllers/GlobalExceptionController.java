@@ -1,7 +1,10 @@
 package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.exceptions.AppException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,4 +19,5 @@ public class GlobalExceptionController {
 
         return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
     }
+
 }

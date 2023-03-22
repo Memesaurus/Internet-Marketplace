@@ -6,9 +6,13 @@ import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/product")
@@ -32,8 +36,20 @@ public class ProductController {
         productService.addProduct(productDTO);
     }
 
+    @PostMapping("/{productId}/images")
+    public void addImage(@PathVariable String productId, @RequestParam("image") MultipartFile image) throws IOException {
+        productService.addImage(productId, image);
+    }
+
+    @GetMapping(value = "/{productId}/images/{imageTitle}",
+            produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody
+    byte[] getProductImages(@PathVariable String productId, @PathVariable String imageTitle) {
+        return productService.getProductImage(productId, imageTitle);
+    }
+
     @GetMapping("/{productId}/reviews")
-    public List<Review> getReviewsOfProduct(@PathVariable String productId) {
+    public Set<Review> getReviewsOfProduct(@PathVariable String productId) {
         return productService.getReviewsOfProduct(productId);
     }
 
@@ -46,5 +62,4 @@ public class ProductController {
     public void patchReview(@PathVariable String productId, @RequestBody ReviewDTO reviewDTO) {
         productService.patchReview(productId, reviewDTO);
     }
-
 }

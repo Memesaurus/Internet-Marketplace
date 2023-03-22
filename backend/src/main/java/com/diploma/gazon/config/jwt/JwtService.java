@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final Integer TOKEN_EXPIRATION_TIME = 20 * 60 * 1000 ; // 20M
+    private static final Integer TOKEN_EXPIRATION_TIME = 20 * 60 * 1000; // 20M
     @Value("${encryption.key}")
     private String key;
 

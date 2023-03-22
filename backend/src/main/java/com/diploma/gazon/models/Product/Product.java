@@ -2,22 +2,24 @@ package com.diploma.gazon.models.Product;
 
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
+import com.diploma.gazon.exceptions.PhotoLimitExceededException;
 import com.diploma.gazon.models.CompanyMember;
 import com.diploma.gazon.models.User.User;
 import lombok.Data;
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.parameters.P;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Data
 @Document(collection = "products")
 public class Product {
+    private static final Integer IMAGE_LIMIT = 5;
+
     @Id
     private String id;
     private String name;
@@ -27,18 +29,19 @@ public class Product {
     private Boolean isInStock;
 
     private Float rating;
-    private List<Review> reviews;
+    private Set<Review> reviews;
 
     @DBRef
     private User owner;
 
-    private List<String> tags;
+    private Set<String> tags;
+    private Set<String> images;
 
     public Product(
             String name,
             String description,
             BigDecimal price,
-            List<String> tags,
+            Set<String> tags,
             User owner) {
         this.name = name;
         this.description = description;
@@ -47,12 +50,21 @@ public class Product {
         this.owner = owner;
         this.isInStock = true;
         this.rating = 0F;
-        this.reviews = new ArrayList<>();
+        this.reviews = new HashSet<>();
+        this.images = new HashSet<>();
+    }
+
+    public synchronized void addProductImage(String imageName) {
+        if (images.size() >= IMAGE_LIMIT) {
+            throw new PhotoLimitExceededException("Достигнут лимит фотографий для данного продукта");
+        }
+
+        this.images.add(imageName);
     }
 
     public synchronized void addReview(Review review) {
         if (reviewExistsByUsername(review.getAuthorUsername())) {
-            throw new AlreadyExistsException("User has already reviewed this product");
+            throw new AlreadyExistsException("Пользователь уже написал отзыв на этот продукт");
         }
 
         this.reviews.add(review);
