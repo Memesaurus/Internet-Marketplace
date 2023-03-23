@@ -1,5 +1,6 @@
 package com.diploma.gazon.config.jwt;
 
+import com.diploma.gazon.controllers.GlobalExceptionController;
 import com.diploma.gazon.exceptions.AppException;
 import com.diploma.gazon.exceptions.TokenExpiredException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -9,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -26,6 +29,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver resolver;
 
     @Override
     protected void doFilterInternal(
@@ -41,7 +47,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String webToken = authHeader.substring(BEARER.length());
-        String username = jwtService.decodeUsername(webToken);
+        String username = null;
+
+        try {
+            username = jwtService.decodeUsername(webToken);
+        } catch (ExpiredJwtException e) {
+            resolver.resolveException(request, response, null, e);
+            return;
+        }
 
 
         if (username == null && !isAuthenticated()) {

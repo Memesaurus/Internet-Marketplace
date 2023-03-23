@@ -7,11 +7,12 @@ import com.diploma.gazon.exceptions.NotCompanyException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.models.CompanyMember;
 import com.diploma.gazon.models.Product.Product;
-import com.diploma.gazon.models.Product.ProductImage;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.repositories.ProductRepository;
 import com.diploma.gazon.services.UserService.UserService;
+import com.tinify.AccountException;
+import com.tinify.ServerException;
 import com.tinify.Tinify;
 import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
@@ -23,9 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -116,21 +118,32 @@ public class ProductService {
         Product product = getOrElseThrow(productId);
         File dir = getOrCreateProductDir(productId);
         String imageName = ObjectId.get().toString();
-
+        File newImage = new File(dir.getPath(), imageName + ".png");
 
         try {
-            Tinify.fromBuffer(image.getBytes()).toFile(dir.getPath() + "/" + imageName + ".png");
+            Tinify.fromBuffer(image.getBytes()).toFile(newImage.getPath());
         } catch (IOException e) {
-            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while uploading image");
+            throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка при загрузке изображения");
+        } catch (ServerException | AccountException e) {
+            // If api returns server error or api compression limit is exceeded, try saving without compressing
+            try {
+                Files.write(newImage.toPath(), image.getBytes());
+            } catch (IOException ex) {
+                throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка при загрузке изображения");
+            }
         }
 
         product.addProductImage(imageName);
         productRepository.save(product);
     }
 
+    public void removeImage(String productId, String imageName) {
+        //TODO remove image and remove image name from entity set
+    }
+
     public byte[] getProductImage(String productId, String fileName) {
         File dir = getOrCreateProductDir(productId);
-        File image = Arrays.stream(dir.listFiles())
+        File image = Arrays.stream(Objects.requireNonNull(dir.listFiles()))
                 .filter(file -> file.getName().equals(fileName))
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
@@ -150,7 +163,7 @@ public class ProductService {
     private File getOrCreateProductDir(String productId) {
         File productDirectory = getProductDirectory(productId);
 
-        if(!productDirectory.exists()) {
+        if (!productDirectory.exists()) {
             productDirectory.mkdirs();
         }
 

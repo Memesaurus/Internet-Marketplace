@@ -79,6 +79,7 @@ public class UserService {
     }
 
     public String authenticate(AuthDTO authDTO) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authDTO.getUsername(),
