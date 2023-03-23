@@ -62,6 +62,10 @@ public class Product {
         this.images.add(imageName);
     }
 
+    public synchronized void removeProductImage(String imageName) {
+        this.images.remove(imageName);
+    }
+
     public synchronized void addReview(Review review) {
         if (reviewExistsByUsername(review.getAuthorUsername())) {
             throw new AlreadyExistsException("Пользователь уже написал отзыв на этот продукт");
@@ -122,5 +126,4 @@ public class Product {
     public synchronized void changeInStockStatus() {
         this.isInStock = !this.isInStock;
     }
-
 }

@@ -4,7 +4,7 @@ import com.diploma.gazon.DTO.ProductDTO;
 import com.diploma.gazon.DTO.ReviewDTO;
 import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.Product.Review;
-import com.diploma.gazon.services.ProductService;
+import com.diploma.gazon.services.ProductService.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
