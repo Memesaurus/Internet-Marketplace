@@ -1,14 +1,13 @@
-package com.diploma.gazon.services.ProductService;
+package com.diploma.gazon.services.ProductServices;
 
 import com.diploma.gazon.exceptions.AppException;
-import com.diploma.gazon.exceptions.TinyPNGApi.TinifyApiException;
+import com.diploma.gazon.exceptions.TinyfyApiExceptions.TinifyApiException;
 import com.tinify.AccountException;
 import com.tinify.ServerException;
 import com.tinify.Tinify;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 

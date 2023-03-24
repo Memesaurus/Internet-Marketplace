@@ -10,6 +10,6 @@ import java.util.Set;
 public class ProductDTO {
     private String name;
     private String description;
-    private BigDecimal price;
+    private Number price;
     private Set<String> tags;
 }

@@ -37,7 +37,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(msNow)
                 .setExpiration(msExpiration)
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 

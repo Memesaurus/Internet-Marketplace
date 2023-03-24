@@ -1,9 +1,6 @@
 package com.diploma.gazon.models.User;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,11 +16,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "members")
 public abstract class User implements UserDetails {
-    public static final PasswordEncoder encoder =
-            PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
     @Id
     private String id;
     private String username;
@@ -50,17 +45,12 @@ public abstract class User implements UserDetails {
                 UserRole userRole,
                 UserAdditionalInfo additionalInfo) {
         this.username = username;
-        this.password = encodePassword(password);
+        this.password = password;
         this.email = email;
         this.isEnabled = true;
         this.userRole = userRole;
         this.additionalInfo = additionalInfo;
     }
-
-    private String encodePassword(String password) {
-        return encoder.encode(password);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(userRole.name()));

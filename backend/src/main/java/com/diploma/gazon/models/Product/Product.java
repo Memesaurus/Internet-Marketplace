@@ -3,20 +3,21 @@ package com.diploma.gazon.models.Product;
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.PhotoLimitExceededException;
-import com.diploma.gazon.models.CompanyMember;
 import com.diploma.gazon.models.User.User;
+import lombok.Builder;
 import lombok.Data;
-import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.parameters.P;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 @Data
 @Document(collection = "products")
+@Builder
 public class Product {
     private static final Integer IMAGE_LIMIT = 5;
 
@@ -25,7 +26,7 @@ public class Product {
     private String name;
     private String description;
 
-    private BigDecimal price;
+    private Number price;
     private Boolean isInStock;
 
     private Float rating;
@@ -36,23 +37,6 @@ public class Product {
 
     private Set<String> tags;
     private Set<String> images;
-
-    public Product(
-            String name,
-            String description,
-            BigDecimal price,
-            Set<String> tags,
-            User owner) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.tags = tags;
-        this.owner = owner;
-        this.isInStock = true;
-        this.rating = 0F;
-        this.reviews = new HashSet<>();
-        this.images = new HashSet<>();
-    }
 
     public synchronized void addProductImage(String imageName) {
         if (images.size() >= IMAGE_LIMIT) {
@@ -82,14 +66,10 @@ public class Product {
     public synchronized void changeReviewOfUser(User user, String body, Float rating) {
         Review review = getReviewByUsername(user.getUsername());
 
-        String newBody = defaultIfNull(body, review.getBody());
-        Float newRating = defaultIfNull(rating, review.getRating());
+        String newBody = body != null ? body : review.getBody();
+        Float newRating = rating != null ? rating : review.getRating();
 
         changeReviewOfUser(review, newBody, newRating);
-    }
-
-    private <T> T defaultIfNull(T value, T defaultValue) {
-        return value == null ? defaultValue : value;
     }
 
     private synchronized void changeReviewOfUser(Review review, String message, Float rating) {
@@ -123,7 +103,14 @@ public class Product {
                 .findFirst();
     }
 
-    public synchronized void changeInStockStatus() {
+    public synchronized void toggleInStockStatus() {
         this.isInStock = !this.isInStock;
+    }
+
+    public static class ProductBuilder {
+        private Boolean isInStock = true;
+        private Float rating = 0F;
+        private Set<Review> reviews = new HashSet<>();
+        private Set<String> images = new HashSet<>();
     }
 }

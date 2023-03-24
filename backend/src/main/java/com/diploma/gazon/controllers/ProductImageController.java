@@ -1,0 +1,29 @@
+package com.diploma.gazon.controllers;
+
+import com.diploma.gazon.services.ProductServices.ProductImageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/product/{productId}/images")
+public class ProductImageController {
+    @Autowired
+    private ProductImageService productImageService;
+
+    @PostMapping()
+    public void addImage(@PathVariable String productId, @RequestParam("image") MultipartFile image) {
+        productImageService.addImage(productId, image);
+    }
+
+    @GetMapping(value = "/{imageTitle}",
+            produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody
+    byte[] getProductImages(@PathVariable String productId, @PathVariable String imageTitle) {
+        return productImageService.getProductImage(productId, imageTitle);
+    }
+
+}

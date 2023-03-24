@@ -7,8 +7,10 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -35,19 +37,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
-        final String BEARER = "Bearer ";
-        String authHeader = request.getHeader("Authorization");
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+        Cookie authCookie = getAuthCookie(request);
+
+        if (authCookie == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String webToken = authHeader.substring(BEARER.length());
-        String username = null;
+        String webToken = authCookie.getValue();
+        String username;
 
         try {
             username = jwtService.decodeUsername(webToken);
@@ -78,6 +80,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private Cookie getAuthCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies!= null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("Authentication")) {
+                    return cookie;
+                }
+            }
+        }
+
+        return null;
     }
 
     private Boolean isAuthenticated() {

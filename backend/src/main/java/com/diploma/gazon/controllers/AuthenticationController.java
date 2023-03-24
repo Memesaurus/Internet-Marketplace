@@ -3,10 +3,14 @@ package com.diploma.gazon.controllers;
 import com.diploma.gazon.DTO.AuthDTO;
 import com.diploma.gazon.DTO.NewUserDTO;
 import com.diploma.gazon.models.User.User;
-import com.diploma.gazon.services.UserService.UserService;
+import com.diploma.gazon.services.UserServices.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -22,8 +26,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String authenticate(@RequestBody AuthDTO authDTO) {
-        return userService.authenticate(authDTO);
+    public void authenticate(@RequestBody AuthDTO authDTO, HttpServletResponse response) {
+        String jwt = userService.authenticate(authDTO);
+
+        Cookie cookie = new Cookie("Authentication", jwt);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 20);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
     }
 
     @PostMapping("/register")

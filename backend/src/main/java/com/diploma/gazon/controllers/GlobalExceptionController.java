@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Arrays;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionController {
     @ExceptionHandler
     public ResponseEntity<String> catchAppException(AppException e) {
         log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
 
         return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
     }

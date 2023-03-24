@@ -1,4 +1,4 @@
-package com.diploma.gazon.services.UserService;
+package com.diploma.gazon.services.UserServices;
 
 import com.diploma.gazon.DTO.AuthDTO;
 import com.diploma.gazon.DTO.NewUserDTO;
@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class UserService {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -45,6 +48,8 @@ public class UserService {
             throw new RoleNotAllowedException();
         }
 
+        encodeNewUserPassword(newUserDTO);
+
         //TODO add mail confirmation (requires some google authorization thingamajig)
         User newUser = UserFactory.getUser(role, newUserDTO);
 
@@ -55,6 +60,10 @@ public class UserService {
         }
 
         return jwtService.generateToken(newUser);
+    }
+
+    private void encodeNewUserPassword(NewUserDTO newUserDTO) {
+        newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
     }
 
     private Boolean isLoggedInUserAdmin() {
@@ -68,6 +77,7 @@ public class UserService {
     }
 
     public User getCurrentUser() {
+        //TODO move authentication logic to service
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
 
@@ -79,7 +89,7 @@ public class UserService {
     }
 
     public String authenticate(AuthDTO authDTO) {
-
+        //TODO move authentication logic to service
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authDTO.getUsername(),

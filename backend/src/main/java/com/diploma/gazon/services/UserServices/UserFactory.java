@@ -1,4 +1,4 @@
-package com.diploma.gazon.services.UserService;
+package com.diploma.gazon.services.UserServices;
 
 import com.diploma.gazon.DTO.NewUserDTO;
 import com.diploma.gazon.exceptions.RoleNotAllowedException;
@@ -8,6 +8,8 @@ import com.diploma.gazon.models.Member;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.models.User.UserCredentials;
 import com.diploma.gazon.models.User.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public interface UserFactory {
     static User getUser(UserRole role, NewUserDTO dto) {
