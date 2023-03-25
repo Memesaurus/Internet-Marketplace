@@ -1,10 +1,6 @@
 package com.diploma.gazon.config.jwt;
 
-import com.diploma.gazon.controllers.GlobalExceptionController;
-import com.diploma.gazon.exceptions.AppException;
-import com.diploma.gazon.exceptions.TokenExpiredException;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -13,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,10 +49,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             username = jwtService.decodeUsername(webToken);
         } catch (ExpiredJwtException e) {
+            Cookie invalidatedCookie = invalidateCookie(authCookie);
+            response.addCookie(invalidatedCookie);
+
             resolver.resolveException(request, response, null, e);
             return;
         }
-
 
         if (username == null && !isAuthenticated()) {
             filterChain.doFilter(request, response);
@@ -82,10 +79,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    private Cookie invalidateCookie(Cookie authCookie) {
+        authCookie.setMaxAge(0);
+        authCookie.setPath("/");
+        authCookie.setValue(null);
+        authCookie.setHttpOnly(true);
+
+        return authCookie;
+    }
+
     private Cookie getAuthCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
-        if (cookies!= null) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("Authentication")) {
                     return cookie;

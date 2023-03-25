@@ -18,7 +18,7 @@ public interface TinyfyWrapper {
         } catch (IOException e) {
             throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка при сохранении изображения");
         } catch (ServerException | AccountException e) {
-            throw new TinifyApiException("Error compressing image");
+            throw new TinifyApiException("Ошибка сжатия изображения");
         }
     }
 }

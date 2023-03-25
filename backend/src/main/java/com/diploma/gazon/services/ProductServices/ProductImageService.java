@@ -41,7 +41,7 @@ public class ProductImageService {
         Path dir = getOrCreateProductDir(productId);
         String imageName = ObjectId.get().toString();
 
-        Path imagePath = Paths.get(dir.toString(), imageName);
+        Path imagePath = Paths.get(dir.toString(), imageName + ".png");
 
         try {
             TinyfyWrapper.saveImage(image, imagePath);
@@ -86,7 +86,7 @@ public class ProductImageService {
     private boolean isNotAuthorized(Product product) {
         User currentUser = userService.getCurrentUser();
 
-        return !product.getOwner().equals(currentUser) && userService.isUserRoleAdmin(currentUser.getUserRole());
+        return !product.getOwner().equals(currentUser) && !userService.isUserRoleAdmin(currentUser.getUserRole());
     }
 
     public byte[] getProductImage(String productId, String imageName) {

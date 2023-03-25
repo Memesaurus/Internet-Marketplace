@@ -39,6 +39,10 @@ public class Product {
     private Set<String> images;
 
     public synchronized void addProductImage(String imageName) {
+        if (images == null) {
+            images = new HashSet<>();
+        }
+
         if (images.size() >= IMAGE_LIMIT) {
             throw new PhotoLimitExceededException("Достигнут лимит фотографий для данного продукта");
         }
