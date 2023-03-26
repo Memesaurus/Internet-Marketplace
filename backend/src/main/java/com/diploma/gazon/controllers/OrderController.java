@@ -20,12 +20,12 @@ public class OrderController {
     }
 
     @PostMapping("/{orderId}/cancel")
-    public void cancelOrder(@RequestParam String orderId) {
+    public void cancelOrder(@PathVariable String orderId) {
         orderService.cancelOrder(orderId);
     }
 
     @PostMapping("/{orderId}/deliver")
-    public void deliverOrder(@RequestParam String orderId) {
+    public void deliverOrder(@PathVariable String orderId) {
         orderService.deliverOrder(orderId);
     }
 

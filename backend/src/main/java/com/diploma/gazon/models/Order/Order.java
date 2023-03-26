@@ -28,30 +28,23 @@ public class Order {
     private Number price;
     @DBRef
     private User user;
-    @DBRef
-    private Map<Product, Number> productQuantityMap;
+    private Map<String, Integer> productQuantityMap;
     private OrderStatus status;
 
-    public Order(UserAddress deliveryAddress, User user, Map<Product, Number> productQuantityMap) {
-        this(deliveryAddress.toString(), user, productQuantityMap);
+    public Order(UserAddress deliveryAddress, User user, Map<String, Integer> productQuantityMap, Number price) {
+        this(deliveryAddress.toString(), user, productQuantityMap, price);
     }
 
-    public Order(String deliveryAddress, User user, Map<Product, Number> productQuantityMap) {
+    public Order(String deliveryAddress, User user, Map<String, Integer> productQuantityMap, Number price) {
         this.created = Instant.now();
         this.cancellableUntil = Instant.now().plusSeconds(CANCELLATION_PERIOD);
         this.deliveryAddress = deliveryAddress;
         this.user = user;
         this.productQuantityMap = productQuantityMap;
-        this.price = calculatePrice();
+        this.price = price;
         this.status = OrderStatus.PENDING;
     }
 
-    private Number calculatePrice() {
-        return this.productQuantityMap.entrySet().stream()
-                .reduce(0.0,
-                        (sum, entry) -> sum + entry.getValue().doubleValue() * entry.getKey().getPrice().doubleValue(),
-                        Double::sum);
-    }
 
     public void cancel() {
         this.status = OrderStatus.CANCELLED;

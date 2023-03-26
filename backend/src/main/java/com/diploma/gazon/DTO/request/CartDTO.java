@@ -7,6 +7,6 @@ import java.util.Map;
 
 @Data
 public class CartDTO {
-    private Map<String, Number> productIdsQuantity;
+    private Map<String, Integer> products;
     private UserAddress address;
 }

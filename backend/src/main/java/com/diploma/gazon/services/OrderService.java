@@ -13,9 +13,7 @@ import com.diploma.gazon.services.UserServices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrderService {
@@ -30,7 +28,7 @@ public class OrderService {
     public Order getOrderById(String orderId) {
         User currentUser = userService.getCurrentUser();
 
-        if (!isUserAuthorized(currentUser)) {
+        if (isUserNotAuthorized(currentUser)) {
             throw new UnauthorizedException();
         }
 
@@ -40,7 +38,7 @@ public class OrderService {
     public List<Order> getAllOrdersOfUser() {
         User currentUser = userService.getCurrentUser();
 
-        if (!isUserAuthorized(currentUser)) {
+        if (isUserNotAuthorized(currentUser)) {
             throw new UnauthorizedException();
         }
 
@@ -50,21 +48,28 @@ public class OrderService {
     public Order placeOrder(CartDTO cartDTO) {
         User currentUser = userService.getCurrentUser();
 
-        Map<Product, Number> productMap = new HashMap<>();
+        Number price = calculateTotalPrice(cartDTO);
 
-        cartDTO.getProductIdsQuantity()
-                .forEach((s, integer) -> productMap.put(productService.getOrElseThrow(s), integer));
-
-        Order order = new Order(cartDTO.getAddress(), currentUser, productMap);
+        Order order = new Order(cartDTO.getAddress(), currentUser, cartDTO.getProducts(), price);
 
         orderRepository.save(order);
         return order;
     }
 
+    private Number calculateTotalPrice(CartDTO cartDTO) {
+        return cartDTO.getProducts().entrySet().stream()
+                .reduce(0.0, (total, entry) ->
+                        {
+                            Product product = productService.getOrElseThrow(entry.getKey());
+                            return total + product.getPrice().doubleValue() * entry.getValue().doubleValue();
+                        },
+                        Double::sum);
+    }
+
     public void cancelOrder(String orderId) {
         Order order = getOrElseThrow(orderId);
 
-        if (!isUserAuthorized(order.getUser())) {
+        if (isUserNotAuthorized(order.getUser())) {
             throw new UnauthorizedException();
         }
 
@@ -77,10 +82,10 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    private boolean isUserAuthorized(User user) {
+    private boolean isUserNotAuthorized(User user) {
         User currentUser = userService.getCurrentUser();
 
-        return currentUser.equals(user) || currentUser.isAdmin();
+        return !currentUser.equals(user) && !currentUser.isAdmin();
     }
 
     public void deliverOrder(String orderId) {
