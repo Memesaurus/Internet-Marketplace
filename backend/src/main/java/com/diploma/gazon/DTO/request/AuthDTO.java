@@ -1,4 +1,4 @@
-package com.diploma.gazon.DTO;
+package com.diploma.gazon.DTO.request;
 
 import lombok.Data;
 

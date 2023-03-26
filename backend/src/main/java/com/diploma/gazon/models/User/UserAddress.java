@@ -10,4 +10,9 @@ public class UserAddress implements Serializable {
     private String city;
     private String street;
     private String house;
+
+    @Override
+    public String toString() {
+        return "Страна " + country + " город " + city + " улица " + street + " дом " + house;
+    }
 }

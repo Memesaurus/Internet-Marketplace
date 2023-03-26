@@ -1,7 +1,7 @@
 package com.diploma.gazon.services.UserServices;
 
-import com.diploma.gazon.DTO.AuthDTO;
-import com.diploma.gazon.DTO.NewUserDTO;
+import com.diploma.gazon.DTO.request.AuthDTO;
+import com.diploma.gazon.DTO.request.NewUserDTO;
 import com.diploma.gazon.config.jwt.JwtService;
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
@@ -44,13 +44,12 @@ public class UserService {
     public String addUser(NewUserDTO newUserDTO) {
         UserRole role = newUserDTO.getRole();
 
-        if (isUserRoleAdmin(role) && isLoggedInUserAdmin()) {
+        if (role == UserRole.ADMIN && isLoggedInUserAdmin()) {
             throw new RoleNotAllowedException();
         }
 
         encodeNewUserPassword(newUserDTO);
 
-        //TODO add mail confirmation (requires some google authorization thingamajig)
         User newUser = UserFactory.getUser(role, newUserDTO);
 
         try {
@@ -73,23 +72,17 @@ public class UserService {
             return false;
         }
 
-        return isUserRoleAdmin(currentUser.getUserRole());
+        return currentUser.isAdmin();
     }
 
     public User getCurrentUser() {
-        //TODO move authentication logic to service
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
 
         return (User) authentication.getPrincipal();
     }
 
-    public Boolean isUserRoleAdmin(UserRole userRole) {
-        return userRole == UserRole.ADMIN;
-    }
-
     public String authenticate(AuthDTO authDTO) {
-        //TODO move authentication logic to service
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authDTO.getUsername(),

@@ -1,7 +1,7 @@
 package com.diploma.gazon.controllers;
 
-import com.diploma.gazon.DTO.AuthDTO;
-import com.diploma.gazon.DTO.NewUserDTO;
+import com.diploma.gazon.DTO.request.AuthDTO;
+import com.diploma.gazon.DTO.request.NewUserDTO;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.TokenExpiredException;
 import com.diploma.gazon.models.User.User;

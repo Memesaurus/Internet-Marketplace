@@ -1,6 +1,6 @@
 package com.diploma.gazon.controllers;
 
-import com.diploma.gazon.DTO.ReviewDTO;
+import com.diploma.gazon.DTO.request.ReviewDTO;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.services.ProductServices.ProductReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

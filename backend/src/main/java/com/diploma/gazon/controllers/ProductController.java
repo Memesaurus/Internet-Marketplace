@@ -1,18 +1,12 @@
 package com.diploma.gazon.controllers;
 
-import com.diploma.gazon.DTO.ProductDTO;
-import com.diploma.gazon.DTO.ReviewDTO;
+import com.diploma.gazon.DTO.request.ProductDTO;
 import com.diploma.gazon.models.Product.Product;
-import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.services.ProductServices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/product")

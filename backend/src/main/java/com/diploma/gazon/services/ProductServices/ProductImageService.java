@@ -86,7 +86,7 @@ public class ProductImageService {
     private boolean isNotAuthorized(Product product) {
         User currentUser = userService.getCurrentUser();
 
-        return !product.getOwner().equals(currentUser) && !userService.isUserRoleAdmin(currentUser.getUserRole());
+        return !product.getOwner().equals(currentUser) && !currentUser.isAdmin();
     }
 
     public byte[] getProductImage(String productId, String imageName) {

@@ -75,4 +75,8 @@ public abstract class User implements UserDetails {
     public boolean isEnabled() {
         return this.isEnabled;
     }
+
+    public boolean isAdmin() {
+        return this.userRole.equals(UserRole.ADMIN);
+    }
 }

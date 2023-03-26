@@ -3,7 +3,7 @@ package com.diploma.gazon.services;
 import com.diploma.gazon.config.jwt.JwtService;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.TokenExpiredException;
-import com.diploma.gazon.models.RefreshToken;
+import com.diploma.gazon.models.Token.RefreshToken;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.repositories.RefreshTokenRepository;
 import com.diploma.gazon.services.UserServices.UserService;
@@ -39,7 +39,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = findByToken(value);
 
         if (!validateRefreshTokenCookie(refreshToken)) {
-           throw new TokenExpiredException(HttpStatus.BAD_REQUEST, "Refresh token has expired");
+           throw new TokenExpiredException(HttpStatus.UNAUTHORIZED, "Refresh token has expired");
         }
 
         User user = refreshToken.getUser();

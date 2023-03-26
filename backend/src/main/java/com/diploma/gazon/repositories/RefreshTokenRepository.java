@@ -1,6 +1,6 @@
 package com.diploma.gazon.repositories;
 
-import com.diploma.gazon.models.RefreshToken;
+import com.diploma.gazon.models.Token.RefreshToken;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

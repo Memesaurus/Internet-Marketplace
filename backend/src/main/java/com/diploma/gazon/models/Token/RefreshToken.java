@@ -1,4 +1,4 @@
-package com.diploma.gazon.models;
+package com.diploma.gazon.models.Token;
 
 import com.diploma.gazon.models.User.User;
 import lombok.*;

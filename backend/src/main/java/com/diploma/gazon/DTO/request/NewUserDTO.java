@@ -1,4 +1,4 @@
-package com.diploma.gazon.DTO;
+package com.diploma.gazon.DTO.request;
 
 import com.diploma.gazon.models.User.UserAdditionalInfo;
 import com.diploma.gazon.models.User.UserRole;
