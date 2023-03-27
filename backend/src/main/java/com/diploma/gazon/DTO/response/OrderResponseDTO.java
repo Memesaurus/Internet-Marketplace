@@ -4,7 +4,7 @@ import com.diploma.gazon.models.Order.OrderStatus;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Map;
+import java.util.Set;
 
 @Data
 public class OrderResponseDTO {
@@ -14,6 +14,6 @@ public class OrderResponseDTO {
     private String deliveryAddress;
     private Number price;
     private UserResponseDTO user;
-    private Map<ProductResponseDTO, Number> productQuantityMap;
+    private Set<ProductOrderDTO> productOrders;
     private OrderStatus status;
 }

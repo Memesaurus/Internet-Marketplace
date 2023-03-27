@@ -17,10 +17,11 @@ public class ProductResponseDTO {
     private Boolean isInStock;
 
     private Float rating;
-    private Set<ReviewResponseDTO> reviews;
-
     private UserResponseDTO owner;
 
     private Set<String> tags;
     private Set<String> images;
+
+    private Set<ReviewResponseDTO> reviews;
+
 }

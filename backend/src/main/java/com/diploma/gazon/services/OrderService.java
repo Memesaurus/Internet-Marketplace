@@ -1,10 +1,14 @@
 package com.diploma.gazon.services;
 
 import com.diploma.gazon.DTO.request.CartDTO;
+import com.diploma.gazon.DTO.response.OrderResponseDTO;
 import com.diploma.gazon.exceptions.OrderException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.UnauthorizedException;
+import com.diploma.gazon.mappers.OrderMapper;
+import com.diploma.gazon.mappers.ProductMapper;
 import com.diploma.gazon.models.Order.Order;
+import com.diploma.gazon.models.Order.ProductOrder;
 import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.repositories.OrderRepository;
@@ -13,7 +17,7 @@ import com.diploma.gazon.services.UserServices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -24,36 +28,47 @@ public class OrderService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
-    public Order getOrderById(String orderId) {
+
+    public OrderResponseDTO getOrderById(String orderId) {
         User currentUser = userService.getCurrentUser();
 
         if (isUserNotAuthorized(currentUser)) {
             throw new UnauthorizedException();
         }
 
-        return getOrElseThrow(orderId);
+        Order order = getOrElseThrow(orderId);
+
+        return orderMapper.toOrderResponseDto(order);
     }
 
-    public List<Order> getAllOrdersOfUser() {
+
+    public OrderResponseDTO placeOrder(CartDTO cartDTO) {
         User currentUser = userService.getCurrentUser();
-
-        if (isUserNotAuthorized(currentUser)) {
-            throw new UnauthorizedException();
-        }
-
-        return orderRepository.findByUserId(currentUser.getId());
-    }
-
-    public Order placeOrder(CartDTO cartDTO) {
-        User currentUser = userService.getCurrentUser();
-
         Number price = calculateTotalPrice(cartDTO);
 
-        Order order = new Order(cartDTO.getAddress(), currentUser, cartDTO.getProducts(), price);
+        Set<ProductOrder> productOrders = getProductsFromCart(cartDTO);
+
+        Order order = new Order(cartDTO.getAddress(), currentUser, productOrders, price);
 
         orderRepository.save(order);
-        return order;
+        return orderMapper.toOrderResponseDto(order);
+    }
+
+    private Set<ProductOrder> getProductsFromCart(CartDTO cartDTO) {
+        Set<ProductOrder> productOrders = new HashSet<>();
+
+        cartDTO.getProducts().forEach((productId, quantity) -> {
+            Product product = productService.getOrElseThrow(productId);
+            ProductOrder productOrder = new ProductOrder(product, quantity);
+            productOrders.add(productOrder);
+        });
+
+        return productOrders;
     }
 
     private Number calculateTotalPrice(CartDTO cartDTO) {
@@ -64,6 +79,17 @@ public class OrderService {
                             return total + product.getPrice().doubleValue() * entry.getValue().doubleValue();
                         },
                         Double::sum);
+    }
+
+    public List<OrderResponseDTO> getAllOrdersOfCurrentUser() {
+        User currentUser = userService.getCurrentUser();
+
+        if (isUserNotAuthorized(currentUser)) {
+            throw new UnauthorizedException();
+        }
+
+        List<Order> orders = orderRepository.findByUserId(currentUser.getId());
+        return orderMapper.toOrderResponseDto(orders);
     }
 
     public void cancelOrder(String orderId) {

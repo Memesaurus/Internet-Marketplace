@@ -21,8 +21,8 @@ public class ProductImageController {
 
     @GetMapping(value = "/{imageTitle}",
             produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody
-    byte[] getProductImages(@PathVariable String productId, @PathVariable String imageTitle) {
+    public @ResponseBody byte[]
+    getProductImages(@PathVariable String productId, @PathVariable String imageTitle) {
         return productImageService.getProductImage(productId, imageTitle);
     }
 

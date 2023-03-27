@@ -1,6 +1,5 @@
 package com.diploma.gazon.models.Order;
 
-import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.models.User.UserAddress;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,19 +28,19 @@ public class Order {
     private Number price;
     @DBRef
     private User user;
-    private Map<String, Integer> productQuantityMap;
+    private Set<ProductOrder> productOrders;
     private OrderStatus status;
 
-    public Order(UserAddress deliveryAddress, User user, Map<String, Integer> productQuantityMap, Number price) {
-        this(deliveryAddress.toString(), user, productQuantityMap, price);
+    public Order(UserAddress deliveryAddress, User user, Set<ProductOrder> productOrders, Number price) {
+        this(deliveryAddress.toString(), user, productOrders, price);
     }
 
-    public Order(String deliveryAddress, User user, Map<String, Integer> productQuantityMap, Number price) {
+    public Order(String deliveryAddress, User user, Set<ProductOrder> productOrders, Number price) {
         this.created = Instant.now();
         this.cancellableUntil = Instant.now().plusSeconds(CANCELLATION_PERIOD);
         this.deliveryAddress = deliveryAddress;
         this.user = user;
-        this.productQuantityMap = productQuantityMap;
+        this.productOrders = productOrders;
         this.price = price;
         this.status = OrderStatus.PENDING;
     }

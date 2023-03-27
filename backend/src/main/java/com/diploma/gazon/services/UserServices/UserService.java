@@ -2,10 +2,12 @@ package com.diploma.gazon.services.UserServices;
 
 import com.diploma.gazon.DTO.request.AuthDTO;
 import com.diploma.gazon.DTO.request.NewUserDTO;
+import com.diploma.gazon.DTO.response.UserResponseDTO;
 import com.diploma.gazon.config.jwt.JwtService;
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.RoleNotAllowedException;
+import com.diploma.gazon.mappers.UserMapper;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.models.User.UserRole;
 import com.diploma.gazon.repositories.UserRepository;
@@ -32,8 +34,13 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @Autowired
+    private UserMapper userMapper;
+
+    public List<UserResponseDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        return userMapper.toUserResponseDto(users);
     }
 
     public User getUserByUsername(String username) {

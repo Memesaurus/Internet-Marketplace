@@ -2,6 +2,7 @@ package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.request.AuthDTO;
 import com.diploma.gazon.DTO.request.NewUserDTO;
+import com.diploma.gazon.DTO.response.UserResponseDTO;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.TokenExpiredException;
 import com.diploma.gazon.models.User.User;
@@ -25,7 +26,7 @@ public class AuthenticationController {
     private RefreshTokenService refreshTokenService;
 
     @GetMapping
-    public List<User> getUsers() {
+    public List<UserResponseDTO> getUsers() {
         return userService.getAllUsers();
     }
 

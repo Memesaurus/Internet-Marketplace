@@ -1,8 +1,10 @@
 package com.diploma.gazon.services.ProductServices;
 
 import com.diploma.gazon.DTO.request.ReviewDTO;
+import com.diploma.gazon.DTO.response.ReviewResponseDTO;
 import com.diploma.gazon.exceptions.NotCompanyException;
 import com.diploma.gazon.exceptions.UnauthorizedException;
+import com.diploma.gazon.mappers.ReviewMapper;
 import com.diploma.gazon.models.Product.Product;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.models.User.User;
@@ -11,6 +13,7 @@ import com.diploma.gazon.services.UserServices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -20,10 +23,15 @@ public class ProductReviewService extends ProductService {
     @Autowired
     private UserService userService;
 
-    public Set<Review> getReviewsOfProduct(String productId) {
+    @Autowired
+    public ReviewMapper reviewMapper;
+
+    public Set<ReviewResponseDTO> getReviewsOfProduct(String productId) {
         Product product = getOrElseThrow(productId);
 
-        return product.getReviews();
+        Set<Review> reviews = product.getReviews();
+
+        return reviewMapper.toReviewResponseDto(reviews);
     }
 
     public void addReviewToProduct(String productId, ReviewDTO reviewDTO) {

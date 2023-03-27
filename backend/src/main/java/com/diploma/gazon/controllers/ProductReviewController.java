@@ -1,6 +1,7 @@
 package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.request.ReviewDTO;
+import com.diploma.gazon.DTO.response.ReviewResponseDTO;
 import com.diploma.gazon.models.Product.Review;
 import com.diploma.gazon.services.ProductServices.ProductReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class ProductReviewController {
     private ProductReviewService productReviewService;
 
     @GetMapping()
-    public Set<Review> getReviewsOfProduct(@PathVariable String productId) {
+    public Set<ReviewResponseDTO> getReviewsOfProduct(@PathVariable String productId) {
         return productReviewService.getReviewsOfProduct(productId);
     }
 
