@@ -12,6 +12,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -20,8 +26,16 @@ public class WebSecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http,
                                     JwtAuthFilter jwtAuthFilter,
                                     AuthenticationProvider authenticationProvider) throws Exception {
+        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        XorCsrfTokenRequestAttributeHandler handler = new XorCsrfTokenRequestAttributeHandler();
+
+        handler.setCsrfRequestAttributeName(null);
+        CsrfTokenRequestHandler requestHandler = handler::handle;
+
         http
-                .csrf().disable()
+                .csrf()
+                .csrfTokenRepository(tokenRepository)
+                .csrfTokenRequestHandler(requestHandler).and()
                 .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
@@ -32,7 +46,7 @@ public class WebSecurityConfig {
                 .authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
