@@ -17,7 +17,7 @@ public class ProductResponseDTO {
     private Boolean isInStock;
 
     private Float rating;
-    private UserResponseDTO owner;
+    private UserResponseDTO user;
 
     private Set<String> tags;
     private Set<String> images;

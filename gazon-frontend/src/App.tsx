@@ -1,45 +1,35 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import "./App.css";
+import { addProduct, login, logout, placeOrder } from "./api/apiRequests";
+import { OrderRequest, UserAddress, UserLoginRequest } from "./api/apiTypes";
+import api from "./api/axiosConfiguration";
 
 function App() {
   const [count, setCount] = useState(0);
 
   const logIn = () => {
-    axios
-      .post("http://localhost:8080/api/auth/login", {
-        username: "admin",
-        password: "admin",
-      })
-      .then(
-        (response) =>
-          (axios.defaults.headers.common["Authorization"] = `Bearer ${response.data}`)
-      );
+    login({username: 'member', password: 'member', rememberMe: true} as UserLoginRequest)
   };
 
-  const postData = () => {
-    axios.post(
-      "http://localhost:8080/api/product/6414d0c1d50083306a0fe6a5/reviews",
-      {
-        rating: 2.5,
-        body: "Жестко"
-      }
-    );
-  };
-
+  const post = () => {
+    addProduct({
+      description: 'test',
+      price: 100,
+      name: 'test',
+      tags: ['test', 'test2']
+    }).then(response => console.log(response))
+  }
+  
   return (
     <div className="App">
+      
       <div className="card">
-        <button onClick={logIn}></button>
-        <button onClick={postData}></button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <button onClick={logIn}>login</button>
+        <button onClick={logout}>logout</button>
+        <button onClick={post}>post</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
     </div>
   );
 }

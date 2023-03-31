@@ -1,5 +1,6 @@
 package com.diploma.gazon.config.jwt;
 
+import com.diploma.gazon.exceptions.UnauthorizedException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

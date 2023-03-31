@@ -5,6 +5,7 @@ import com.diploma.gazon.DTO.request.NewUserDTO;
 import com.diploma.gazon.DTO.response.UserResponseDTO;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.TokenExpiredException;
+import com.diploma.gazon.exceptions.UnauthorizedException;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.services.RefreshTokenService;
 import com.diploma.gazon.services.UserServices.UserService;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AuthenticationController {
     @Autowired
     private UserService userService;
@@ -28,6 +29,44 @@ public class AuthenticationController {
     @GetMapping
     public List<UserResponseDTO> getUsers() {
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/csrf")
+    public void getCsrf() {
+        //Stub for fetching csrf token for subsequent requests
+    }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response, HttpServletRequest request) {
+        Cookie refreshTokenCookie;
+        Cookie jwtCookie;
+
+        try {
+            refreshTokenCookie = getRefreshTokenCookieOrThrow(request);
+            jwtCookie = getJwtCookieOrThrow(request);
+        } catch (NotFoundException e) {
+            throw new UnauthorizedException();
+        }
+
+        Cookie invalidatedJwtCookie = invalidateCookie(jwtCookie);
+        Cookie invalidatedRefreshTokenCookie = invalidateCookie(refreshTokenCookie);
+
+        response.addCookie(invalidatedJwtCookie);
+        response.addCookie(invalidatedRefreshTokenCookie);
+    }
+
+    private Cookie getJwtCookieOrThrow(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies!= null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("Authentication") && cookie.getValue()!= null) {
+                    return cookie;
+                }
+            }
+        }
+
+        throw new NotFoundException();
     }
 
     @PostMapping("/refresh")

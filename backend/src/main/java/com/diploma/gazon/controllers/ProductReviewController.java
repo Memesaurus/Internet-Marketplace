@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/product/{productId}/reviews")
-@CrossOrigin
+@RequestMapping("/api/products/{productId}/reviews")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class ProductReviewController {
     @Autowired
     private ProductReviewService productReviewService;
