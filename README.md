@@ -1,2 +1,8 @@
-# Internet-Marketplace
-Graduate work from my university. Mongo + Sping (JWT) + React
+# Интернет-маркетплейс
+Дипломная работа для Московского Университета Связи и Информатики.
+
+Бэк написан на Spring boot (data, security), авторизация стейтлесс, с JWT токенами, которые передаются на фронт как куки, вместе с csrf и refresh токенами.
+
+Фронт на React, useForm, TypeScript, Redux-toolkit, axios. Стейт приложения хранится на сервере.
+
+БД - Mongo
