@@ -69,6 +69,11 @@ public class AuthenticationController {
         throw new NotFoundException();
     }
 
+    @GetMapping("/current")
+    public String getCurrentUser() {
+        return userService.getCurrentUser().getUsername();
+    }
+
     @PostMapping("/refresh")
     public void refreshJWTToken(HttpServletResponse response, HttpServletRequest request) {
         Cookie refreshTokenCookie = getRefreshTokenCookieOrThrow(request);

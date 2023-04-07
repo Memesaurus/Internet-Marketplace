@@ -1,36 +1,31 @@
-import axios from "axios";
-import React from "react";
-import { useState } from "react";
-import { addProduct, login, logout, placeOrder } from "./api/apiRequests";
-import { OrderRequest, UserAddress, UserLoginRequest } from "./api/apiTypes";
-import api from "./api/axiosConfiguration";
+import React, { useEffect } from "react";
+import AppRoutes from "./AppRoutes";
+import Header from "./components/Header"
+import { Container } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setUser } from "./redux/userSlice";
+import { getCurrentUser } from "./api/apiRequests";
 
-function App() {
-  const [count, setCount] = useState(0);
+const App = () => {
+  const dispatch = useDispatch();
 
-  const logIn = () => {
-    login({username: 'member', password: 'member', rememberMe: true} as UserLoginRequest)
-  };
+  useEffect(() => {
+    getCurrentUser()
+    .then((response) => {      
+      if (response.status === 200) {
+        dispatch(setUser({username: response.data}))
+      }
+    })
 
-  const post = () => {
-    addProduct({
-      description: 'test',
-      price: 100,
-      name: 'test',
-      tags: ['test', 'test2']
-    }).then(response => console.log(response))
-  }
-  
+  }, []);
+
   return (
-    <div className="App">
-      
-      <div className="card">
-        <button onClick={logIn}>login</button>
-        <button onClick={logout}>logout</button>
-        <button onClick={post}>post</button>
-      </div>
-
-    </div>
+    <>
+    <Header />
+    <Container className="mt-3">
+      <AppRoutes />
+    </Container>
+    </>
   );
 }
 

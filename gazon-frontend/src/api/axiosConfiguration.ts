@@ -43,11 +43,12 @@ api.interceptors.response.use(
     response => response, 
     async error => {
         const lastRequest = error.config;
+
         
-        if (isNotJWTExpiredError(error) || lastRequest._retried) {                       
+        if (error.status != 401 &&  isNotJWTExpiredError(error) && isNotStateRequest(error)) {                       
             return error;
-        }
-    
+        }        
+        
         try {
             await utilApi.post("/auth/refresh")
         } catch (e) {            
@@ -59,7 +60,11 @@ api.interceptors.response.use(
 )
 
 const isNotJWTExpiredError = (error: AxiosError): boolean => {
-    return error.status != 401 && !error.request?.response.includes("JWT expired");
+    return !error.request?.response.includes("JWT expired");
+}
+
+const isNotStateRequest = (error: AxiosError): boolean => {
+    return !error.config?.headers["STATE-REQUEST"];
 }
 
 export default api;

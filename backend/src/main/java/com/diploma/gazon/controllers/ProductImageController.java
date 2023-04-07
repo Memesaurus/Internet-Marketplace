@@ -20,11 +20,11 @@ public class ProductImageController {
         productImageService.addImage(productId, image);
     }
 
-    @GetMapping(value = "/{imageTitle}",
+    @GetMapping(value = "/{imageId}",
             produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody byte[]
-    getProductImages(@PathVariable String productId, @PathVariable String imageTitle) {
-        return productImageService.getProductImage(productId, imageTitle);
+    getProductImages(@PathVariable String productId, @PathVariable String imageId) {
+        return productImageService.getProductImage(productId, imageId);
     }
 
 }

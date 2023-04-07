@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class UnauthorizedException extends AppException {
     public UnauthorizedException() {
-        super(HttpStatus.FORBIDDEN);
+        super(HttpStatus.FORBIDDEN, "Unauthorized");
     }
 }

@@ -40,7 +40,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/product**")
+                .requestMatchers(HttpMethod.GET,  "/api/products/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -7,6 +7,7 @@ import com.diploma.gazon.config.jwt.JwtService;
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.RoleNotAllowedException;
+import com.diploma.gazon.exceptions.UnauthorizedException;
 import com.diploma.gazon.mappers.UserMapper;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.models.User.UserRole;
@@ -21,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service

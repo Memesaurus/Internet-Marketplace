@@ -91,7 +91,7 @@ public class ProductImageService {
 
     public byte[] getProductImage(String productId, String imageName) {
         Path dir = getOrCreateProductDir(productId);
-        Path imagePath = getImagePathFromDir(dir, imageName);
+        Path imagePath = getImagePathFromDir(dir, imageName + ".png");
 
         return parseImage(imagePath);
 

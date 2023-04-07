@@ -16,9 +16,7 @@ export const userSlice = createSlice({
       const { username } = action.payload;
       state.username = username;
     },
-    clearUser: (state) => {
-      state = initialState;
-    },
+    clearUser: () => initialState,
   },
 });
 
