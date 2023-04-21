@@ -3,6 +3,7 @@ import { getAllProducts } from "../api/apiRequests";
 import { Product } from "../api/apiTypes";
 import ProductCard from "./ProductCard";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [products, setProducts] = useState<Product[]>();
@@ -15,7 +16,10 @@ const HomePage = () => {
   return (
     <Container className="d-flex flex-wrap gap-4 justify-content-center">
       {products?.map((product) => 
-      <ProductCard key={product.id} product={product}/>)}
+      <Link key={product.id} to={`/product/${product.id}`}>
+        <ProductCard product={product}/>
+      </Link>
+      )}
     </Container>
   );
 };

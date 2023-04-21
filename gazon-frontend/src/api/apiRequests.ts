@@ -40,11 +40,15 @@ export const getOrder = async (orderId: string) => {
 }
 
 export const getAllProducts = async () => {
-    return api.get("/products");
+    return api.get("/products/home");
 }
 
 export const getProductsOfCompany = async (companyName: string) => {
     return api.get(`/products/${companyName}`);
+}
+
+export const getProduct = async (productId: string | undefined) => {
+    return api.get(`/products/${productId}`);
 }
 
 export const addProduct = async (data: ProductRequest) => {

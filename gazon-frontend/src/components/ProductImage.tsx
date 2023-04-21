@@ -6,11 +6,18 @@ import { Image } from 'react-bootstrap';
 type Props = {
     imageId: string | undefined;
     productId: string;
+    className?: string;
+    size?: 'BIG' | 'SMALL';
 }
 
-const ProductImage = ({ imageId, productId }: Props) => {
+const ProductImage = ({ imageId, productId, className, size }: Props) => {
     const [imageUrl, setImageUrl] = useState<string>()
     
+  const sizes = {
+    'BIG': {width: 600, height: 600},
+    'SMALL': {width: 200, height: 200}
+  }
+
     const setDefaultImage = () => {
         setImageUrl(defaultImage)
     }
@@ -22,7 +29,7 @@ const ProductImage = ({ imageId, productId }: Props) => {
     
 
   return(
-    <Image src={imageUrl} onError={setDefaultImage} style={{width: 200, height: 200}} />
+    <Image className={className} src={imageUrl} onError={setDefaultImage} style={size && sizes[size]} />
   ) 
 }
 

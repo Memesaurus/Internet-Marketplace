@@ -2,6 +2,7 @@ package com.diploma.gazon.services.ProductServices;
 
 import com.diploma.gazon.DTO.request.ProductDTO;
 import com.diploma.gazon.DTO.response.ProductResponseDTO;
+import com.diploma.gazon.DTO.response.ProductResponseDTOHomePage;
 import com.diploma.gazon.exceptions.NotCompanyException;
 import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.mappers.ProductMapper;
@@ -24,10 +25,16 @@ public class ProductService {
     @Autowired
     private ProductMapper productMapper;
 
-    public List<ProductResponseDTO> getProductList() {
+    public List<ProductResponseDTOHomePage> getProductListHomePage() {
         List<Product> products = productRepository.findAll();
 
-        return productMapper.toProductResponseDto(products);
+        return productMapper.toProductResponseDtoHomePage(products);
+    }
+
+    public ProductResponseDTO getProduct(String productId) {
+        Product product = getOrElseThrow(productId);
+
+        return productMapper.toProductResponseDto(product);
     }
 
     public List<ProductResponseDTO> getProductsOfUser(String username) {

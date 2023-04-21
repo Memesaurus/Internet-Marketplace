@@ -88,6 +88,10 @@ public class UserService {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
 
+        if (authentication.getPrincipal() instanceof String) {
+            throw new UnauthorizedException();
+        }
+
         return (User) authentication.getPrincipal();
     }
 

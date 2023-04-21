@@ -2,7 +2,7 @@ package com.diploma.gazon.controllers;
 
 import com.diploma.gazon.DTO.request.ProductDTO;
 import com.diploma.gazon.DTO.response.ProductResponseDTO;
-import com.diploma.gazon.models.Product.Product;
+import com.diploma.gazon.DTO.response.ProductResponseDTOHomePage;
 import com.diploma.gazon.services.ProductServices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,19 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping()
-    public List<ProductResponseDTO> getAllProducts() {
-        return productService.getProductList();
+    @GetMapping("/home")
+    public List<ProductResponseDTOHomePage> getAllProductsSummary() {
+        return productService.getProductListHomePage();
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/user/{username}")
     public List<ProductResponseDTO> getProductsOfUser(@PathVariable String username) {
         return productService.getProductsOfUser(username);
+    }
+
+    @GetMapping("/{productId}")
+    public ProductResponseDTO getProduct(@PathVariable String productId) {
+        return productService.getProduct(productId);
     }
 
     @PostMapping

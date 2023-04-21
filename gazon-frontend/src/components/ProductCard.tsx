@@ -14,7 +14,7 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <div className='h5'>
-        <ProductImage imageId={product.images?.at(0)} productId={product.id} />
+        <ProductImage imageId={product.images?.at(0)} productId={product.id} size='SMALL' />
 
         <div className='pt-1'>
             {intl.format(product.price)}   
@@ -39,7 +39,7 @@ const ProductCard = ({ product }: Props) => {
 
             <div className='d-flex align-items-center'>
                 <AiOutlineMessage style={counterStyle} />
-                {product.reviews.length}
+                {"review cound idk maybe"}
             </div>
         </div>
     </div>
