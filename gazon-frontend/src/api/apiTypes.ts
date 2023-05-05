@@ -3,6 +3,11 @@ interface UserAuthRequest {
     password: string;
 }
 
+export interface UserStateResponse {
+    username: string;
+    cart: CartItem[];
+}
+
 export interface UserLoginRequest extends UserAuthRequest {
     rememberMe: boolean;
 }
@@ -72,11 +77,11 @@ export interface Order {
     deliveryAddress: string;
     price: number;
     user: User;
-    productOrders: ProductOrder[];
+    productOrders: CartItem[];
     status: boolean;
 }
 
-export interface ProductOrder {
+export interface CartItem {
     product: Product;
     quantity: number;
 }

@@ -45,7 +45,7 @@ api.interceptors.response.use(
         const lastRequest = error.config;
 
         
-        if (error.status != 401 &&  isNotJWTExpiredError(error) && isNotStateRequest(error)) {                       
+        if (error.status != 401 && isNotJWTExpiredError(error) && isNotStateRequest(error)) {                       
             return error;
         }        
         

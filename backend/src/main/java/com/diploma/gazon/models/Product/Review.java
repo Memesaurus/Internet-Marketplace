@@ -1,6 +1,5 @@
 package com.diploma.gazon.models.Product;
 
-import com.diploma.gazon.models.Member;
 import com.diploma.gazon.models.User.User;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -17,17 +16,17 @@ public class Review {
     private Float rating;
     private String body;
     @DBRef
-    private User author;
+    private User user;
 
-    public Review(Float rating, String body, User author) {
+    public Review(Float rating, String body, User user) {
         this.id = new ObjectId().toString();
         this.createdAt = Instant.now();
         this.rating = rating;
         this.body = body;
-        this.author = author;
+        this.user = user;
     }
 
-    public String getAuthorUsername() {
-        return author.getUsername();
+    public String getUserUsername() {
+        return user.getUsername();
     }
 }

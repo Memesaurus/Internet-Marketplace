@@ -33,7 +33,7 @@ public class Product {
     private Set<Review> reviews;
 
     @DBRef
-    private User owner;
+    private User user;
 
     private Set<String> tags;
     private Set<String> images;
@@ -55,7 +55,7 @@ public class Product {
     }
 
     public synchronized void addReview(Review review) {
-        if (reviewExistsByUsername(review.getAuthorUsername())) {
+        if (reviewExistsByUsername(review.getUserUsername())) {
             throw new AlreadyExistsException("Пользователь уже написал отзыв на этот продукт");
         }
 
@@ -103,7 +103,7 @@ public class Product {
 
     private Optional<Review> findReviewByUsername(String username) {
         return reviews.stream()
-                .filter(o -> Objects.equals(o.getAuthor().getUsername(), username))
+                .filter(o -> Objects.equals(o.getUser().getUsername(), username))
                 .findFirst();
     }
 

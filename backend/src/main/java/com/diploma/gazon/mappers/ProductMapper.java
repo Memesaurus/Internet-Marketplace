@@ -4,12 +4,13 @@ import com.diploma.gazon.DTO.response.ProductResponseDTO;
 import com.diploma.gazon.DTO.response.ProductResponseDTOHomePage;
 import com.diploma.gazon.models.Product.Product;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface ProductMapper {
     ProductResponseDTO toProductResponseDto(Product product);
 

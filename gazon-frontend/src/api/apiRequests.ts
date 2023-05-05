@@ -1,8 +1,9 @@
-import { CompanyUserRegisterRequest, MemberUserRegisterRequest, OrderRequest, ProductRequest, ReviewRequest, UserLoginRequest } from "./apiTypes"
+import { AxiosResponse } from "axios"
+import { CompanyUserRegisterRequest, MemberUserRegisterRequest, Order, OrderRequest, Product, ProductRequest, Review, ReviewRequest, UserLoginRequest, UserStateResponse } from "./apiTypes"
 import api from "./axiosConfiguration"
 
-export const getCurrentUser = async () => {
-    return api.get("/auth/current", {headers: {
+export const getCurrentState = async () => {
+    return api.get<UserStateResponse>("/auth/current", {headers: {
         "STATE-REQUEST": true
     }})
 }
@@ -24,7 +25,7 @@ export const placeOrder = async (data: OrderRequest) => {
 }
 
 export const getUserOrders = async () => {
-    return api.get("/orders/user");
+    return api.get<Order[]>("/orders/user");
 }
 
 export const cancelOrder = async (orderId: string) => {
@@ -36,19 +37,19 @@ export const deliverOrder = async (orderId: string) => {
 }
 
 export const getOrder = async (orderId: string) => {
-    return api.get(`/orders/${orderId}`);
+    return api.get<Order>(`/orders/${orderId}`);
 }
 
 export const getAllProducts = async () => {
-    return api.get("/products/home");
+    return api.get<Product[]>("/products/home");
 }
 
 export const getProductsOfCompany = async (companyName: string) => {
-    return api.get(`/products/${companyName}`);
+    return api.get<Product[]>(`/products/${companyName}`);
 }
 
 export const getProduct = async (productId: string | undefined) => {
-    return api.get(`/products/${productId}`);
+    return api.get<Product>(`/products/${productId}`);
 }
 
 export const addProduct = async (data: ProductRequest) => {
@@ -66,7 +67,7 @@ export const getProductImage = (productId: string, imageId: string): string => {
 }
 
 export const getReviewsOfProduct = async (productId: string) => {
-    return api.get(`/products/${productId}/reviews`);
+    return api.get<Review[]>(`/products/${productId}/reviews`);
 }
 
 export const addReviewToProduct = async (productId: string, data: ReviewRequest) => {

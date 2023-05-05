@@ -4,16 +4,16 @@ import Header from "./components/Header"
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/userSlice";
-import { getCurrentUser } from "./api/apiRequests";
+import { getCurrentState } from "./api/apiRequests";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getCurrentUser()
+    getCurrentState()
     .then((response) => {      
       if (response.status === 200) {
-        dispatch(setUser({username: response.data}))
+        dispatch(setUser({username: response.data.username}))
       }
     })
 

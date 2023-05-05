@@ -40,7 +40,7 @@ public class ProductService {
     public List<ProductResponseDTO> getProductsOfUser(String username) {
         User user = userService.getUserByUsername(username);
 
-        List<Product> products = productRepository.findAllByOwnerId(user.getId());
+        List<Product> products = productRepository.findAllByUserId(user.getId());
 
         return productMapper.toProductResponseDto(products);
     }
@@ -58,7 +58,7 @@ public class ProductService {
                 .description(productDTO.getDescription())
                 .price(productDTO.getPrice())
                 .tags(productDTO.getTags())
-                .owner(currentUser)
+                .user(currentUser)
                 .build();
 
         productRepository.save(product);

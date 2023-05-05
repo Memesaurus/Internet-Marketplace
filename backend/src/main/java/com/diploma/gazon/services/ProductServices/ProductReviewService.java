@@ -57,7 +57,7 @@ public class ProductReviewService extends ProductService {
         Product product = getOrElseThrow(productId);
         User currentUser = userService.getCurrentUser();
 
-        if (!product.getOwner().equals(currentUser) && !currentUser.isAdmin()) {
+        if (!product.getUser().equals(currentUser) && !currentUser.isAdmin()) {
             throw new UnauthorizedException();
         }
 

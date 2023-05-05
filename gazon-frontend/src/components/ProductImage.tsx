@@ -10,13 +10,31 @@ type Props = {
     size?: 'BIG' | 'SMALL';
 }
 
+type dimensions = {
+  width: number;
+  height: number;
+}
+
 const ProductImage = ({ imageId, productId, className, size }: Props) => {
     const [imageUrl, setImageUrl] = useState<string>()
-    
-  const sizes = {
-    'BIG': {width: 600, height: 600},
-    'SMALL': {width: 200, height: 200}
-  }
+
+    const viewport = {
+      width: window.innerWidth, 
+      height: window.innerHeight
+    } as dimensions;
+
+    const sizes = {
+      'BIG': {width: 600, height: 600} as dimensions,
+      'SMALL': {width: 200, height: 200} as dimensions
+    }
+
+    const areDimensionsBiggerThanScreen = ({ width, height }: dimensions): boolean => {
+      return width >= viewport.width || height >= viewport.height;
+    }
+
+    if (size && areDimensionsBiggerThanScreen(sizes[size])) {
+      size = undefined;
+    }
 
     const setDefaultImage = () => {
         setImageUrl(defaultImage)
@@ -27,7 +45,6 @@ const ProductImage = ({ imageId, productId, className, size }: Props) => {
         setDefaultImage()
     }, []);
     
-
   return(
     <Image className={className} src={imageUrl} onError={setDefaultImage} style={size && sizes[size]} />
   ) 

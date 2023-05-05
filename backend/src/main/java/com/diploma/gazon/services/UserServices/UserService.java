@@ -3,6 +3,7 @@ package com.diploma.gazon.services.UserServices;
 import com.diploma.gazon.DTO.request.AuthDTO;
 import com.diploma.gazon.DTO.request.NewUserDTO;
 import com.diploma.gazon.DTO.response.UserResponseDTO;
+import com.diploma.gazon.DTO.response.UserStateDTO;
 import com.diploma.gazon.config.jwt.JwtService;
 import com.diploma.gazon.exceptions.AlreadyExistsException;
 import com.diploma.gazon.exceptions.NotFoundException;
@@ -82,6 +83,12 @@ public class UserService {
         }
 
         return currentUser.isAdmin();
+    }
+
+    public UserStateDTO getCurrentUserState() {
+        User currentUser = getCurrentUser();
+
+        return userMapper.toUserStateDto(currentUser);
     }
 
     public User getCurrentUser() {

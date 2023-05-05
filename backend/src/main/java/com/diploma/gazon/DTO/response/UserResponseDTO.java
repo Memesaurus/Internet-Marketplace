@@ -8,4 +8,5 @@ public class UserResponseDTO {
     String username;
     String email;
     UserAdditionalInfo additionalInfo;
+    String name;
 }
