@@ -1,14 +1,14 @@
 import React from "react";
 import { Form, Button, Container, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { UserLoginRequest } from "../api/apiTypes";
-import { login } from "../api/apiRequests";
+import { getCurrentState, login } from "../api/apiRequests";
 import { setUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -18,8 +18,12 @@ const LoginPage = () => {
 
   const onSubmit = handleSubmit((data) => {
     login(data).then(() => {
-      dispatch(setUser({ username: data.username }));
-      navigate("/");
+      getCurrentState().then((response) => {
+        if (response.status === 200) {
+          dispatch(setUser({ username: response.data.username, role: response.data.role }))
+          navigate("/");
+        }
+      })
     });
   });
 
@@ -30,6 +34,7 @@ const LoginPage = () => {
           <Form.Label>Логин</Form.Label>
           <Form.Control
             type="username"
+            required
             placeholder="Enter username"
             {...register("username")}
           />
@@ -39,6 +44,7 @@ const LoginPage = () => {
           <Form.Label>Пароль</Form.Label>
           <Form.Control
             type="password"
+            required
             placeholder="Password"
             {...register("password")}
           />

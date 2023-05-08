@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserRole } from "../api/apiTypes";
 
 export interface UserState {
   username: null | string;
+  role: UserRole | null;
 }
 
 const initialState: UserState = {
   username: null,
+  role: null
 };
 
 export const userSlice = createSlice({
@@ -13,8 +16,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
-      const { username } = action.payload;
+      const { username, role } = action.payload;
       state.username = username;
+      state.role = role;
     },
     clearUser: () => initialState,
   },

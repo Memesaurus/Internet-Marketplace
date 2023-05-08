@@ -5,6 +5,7 @@ interface UserAuthRequest {
 
 export interface UserStateResponse {
     username: string;
+    role: UserRole;
     cart: CartItem[];
 }
 
@@ -30,9 +31,9 @@ export interface MemberUserRegisterRequest extends UserLoginRequest {
 }
 
 export enum UserRole {
-    ADMIN,
-    MEMBER,
-    COMPANY
+    ADMIN = "ADMIN",
+    MEMBER = "MEMBER",
+    COMPANY = "COMPANY"
 }
 
 export interface OrderRequest {

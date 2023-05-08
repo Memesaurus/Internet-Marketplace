@@ -44,16 +44,26 @@ public class AuthenticationController {
 
         try {
             refreshTokenCookie = getRefreshTokenCookieOrThrow(request);
-            jwtCookie = getJwtCookieOrThrow(request);
         } catch (NotFoundException e) {
-            throw new UnauthorizedException();
+            refreshTokenCookie = null;
         }
 
-        Cookie invalidatedJwtCookie = invalidateCookie(jwtCookie);
-        Cookie invalidatedRefreshTokenCookie = invalidateCookie(refreshTokenCookie);
+        try {
+            jwtCookie = getJwtCookieOrThrow(request);
+        } catch (NotFoundException e) {
+            jwtCookie = null;
+        }
 
-        response.addCookie(invalidatedJwtCookie);
-        response.addCookie(invalidatedRefreshTokenCookie);
+        Cookie invalidatedJwtCookie = jwtCookie != null ? invalidateCookie(jwtCookie) : null;
+        Cookie invalidatedRefreshTokenCookie = refreshTokenCookie != null ? invalidateCookie(refreshTokenCookie) : null;
+
+        if (invalidatedJwtCookie != null) {
+            response.addCookie(invalidatedJwtCookie);
+        }
+
+        if (invalidatedRefreshTokenCookie != null) {
+            response.addCookie(invalidatedRefreshTokenCookie);
+        }
     }
 
     private Cookie getJwtCookieOrThrow(HttpServletRequest request) {
@@ -90,14 +100,14 @@ public class AuthenticationController {
         }
     }
 
-    private Cookie invalidateCookie(Cookie refreshTokenCookie) {
-        refreshTokenCookie.setMaxAge(0);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setValue(null);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(false);
+    private Cookie invalidateCookie(Cookie cookie) {
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        cookie.setValue(null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
 
-        return refreshTokenCookie;
+        return cookie;
     }
 
     private Cookie getRefreshTokenCookieOrThrow(HttpServletRequest request) {

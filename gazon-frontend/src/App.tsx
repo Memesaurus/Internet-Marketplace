@@ -5,15 +5,16 @@ import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/userSlice";
 import { getCurrentState } from "./api/apiRequests";
+import { useAppDispatch } from "./redux/hooks";
 
 const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getCurrentState()
     .then((response) => {      
       if (response.status === 200) {
-        dispatch(setUser({username: response.data.username}))
+        dispatch(setUser({username: response.data.username, role: response.data.role}))
       }
     })
 

@@ -7,12 +7,12 @@ type Props = {
     imageId: string | undefined;
     productId: string;
     className?: string;
-    size?: 'BIG' | 'SMALL';
+    size?: 'BIG' | 'SMALL' | 'MINI' | 'MOBILE';
 }
 
 type dimensions = {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 }
 
 const ProductImage = ({ imageId, productId, className, size }: Props) => {
@@ -24,8 +24,10 @@ const ProductImage = ({ imageId, productId, className, size }: Props) => {
     } as dimensions;
 
     const sizes = {
-      'BIG': {width: 600, height: 600} as dimensions,
-      'SMALL': {width: 200, height: 200} as dimensions
+      'BIG': {width: 500, height: 500} as dimensions,
+      'SMALL': {width: 200, height: 200} as dimensions,
+      'MOBILE': {width: '50vh', height: 300} as dimensions,
+      'MINI': {width: 75 , height: 75} as dimensions
     }
 
     const areDimensionsBiggerThanScreen = ({ width, height }: dimensions): boolean => {
@@ -33,7 +35,7 @@ const ProductImage = ({ imageId, productId, className, size }: Props) => {
     }
 
     if (size && areDimensionsBiggerThanScreen(sizes[size])) {
-      size = undefined;
+      size = 'MOBILE';
     }
 
     const setDefaultImage = () => {

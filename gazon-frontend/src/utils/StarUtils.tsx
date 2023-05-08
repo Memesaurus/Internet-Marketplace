@@ -4,7 +4,7 @@ import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 const displayStars = (rating: number): ReactElement => {
     const stars: ReactElement[] = [];
 
-    while (rating >= 0.5 && stars.length <= 5) {
+    while (rating >= 0.5 && stars.length < 5) {
         if (rating >= 1) {
             rating--;
             stars.push(<BsStarFill key={stars.length} />);

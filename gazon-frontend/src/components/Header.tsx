@@ -1,39 +1,44 @@
 import React from "react";
-import { Container, Nav, NavbarBrand } from "react-bootstrap";
+import { Container, NavbarBrand } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import logo_mini from "../assets/logo_mini.png";
 import Image from "react-bootstrap/Image"
-import { useAppSelector } from "../redux/hooks";
 import SearchBar from "./SearchBar";
+import WithLogin from "./WithLogin";
+import NoLoginNavbar from "./NoLoginNavbar";
+import CompanyNavbar from "./CompanyNavbar";
+import MemberNavbar from "./MemberNavbar";
 
 const Header = () => {
-    const username = useAppSelector((state) => state.user.username);
+    const WithLoginNavbar = WithLogin({
+      NoLoginComponent: NoLoginNavbar,
+      CompanyComponent: CompanyNavbar,
+      MemberComponent: MemberNavbar,
+    })
 
   return (
-    <Navbar className="border-bottom border-primary" expand="md">
+    <Navbar className="border-bottom border-primary" variant="dark" expand="md">
       <Container fluid>
+        
         <NavbarBrand className="flex-grow-1 d-none d-md-block">
             <Link to="/"> 
                 <Image style={{width: 120, height: 50}} src={logo} alt="Gazon" /> 
             </Link>
         </NavbarBrand>
+        <NavbarBrand className="d-block d-md-none">
+            <Link to="/"> 
+                <Image style={{width: 40, height: 40}} src={logo_mini} alt="Gazon" /> 
+            </Link>
+        </NavbarBrand>
+
         <div className="flex-grow-1">
           <SearchBar />
         </div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mx-2 ms-auto">
-            <Nav.Link className="text-white">
-              Logged in as {username}
-            </Nav.Link>
-            <Nav.Link className="text-white" as={NavLink} to="/login"> 
-              Войти 
-            </Nav.Link>
-            <Nav.Link className="text-white" as={NavLink} to="/logout"> 
-              Выйти
-            </Nav.Link>
-          </Nav>
+          <WithLoginNavbar />
         </Navbar.Collapse>
       </Container>
     </Navbar>

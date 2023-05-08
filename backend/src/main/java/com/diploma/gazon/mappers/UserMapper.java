@@ -4,6 +4,7 @@ import com.diploma.gazon.DTO.response.UserResponseDTO;
 import com.diploma.gazon.DTO.response.UserStateDTO;
 import com.diploma.gazon.models.User.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -13,5 +14,6 @@ public interface UserMapper {
 
     List<UserResponseDTO> toUserResponseDto(Iterable<User> users);
 
+    @Mapping(target = "role", source = "userRole")
     UserStateDTO toUserStateDto(User user);
 }

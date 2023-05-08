@@ -9,7 +9,7 @@ export const getCurrentState = async () => {
 }
 
 export const login = async (data: UserLoginRequest) => {
-    return api.post("/auth/login", data);
+    return api.post<UserStateResponse>("/auth/login", data);
 }
 
 export const logout = async () => {
