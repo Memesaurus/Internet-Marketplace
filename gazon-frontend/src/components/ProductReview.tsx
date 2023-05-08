@@ -41,7 +41,7 @@ const ProductReview = ({ review }: Props) => {
   };
 
   return (
-    <div className="pb-3">
+    <div className="mb-3">
       <div className="d-flex align-items-center">
         <div className="display-lg-6 flex-fill">
           <b>{review.user.username}</b>
