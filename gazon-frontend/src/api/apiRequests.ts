@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios"
+import { AxiosError } from "axios"
 import { CompanyUserRegisterRequest, MemberUserRegisterRequest, Order, OrderRequest, Product, ProductRequest, Review, ReviewRequest, UserLoginRequest, UserStateResponse } from "./apiTypes"
 import api from "./axiosConfiguration"
 
@@ -9,14 +9,14 @@ export const getCurrentState = async () => {
 }
 
 export const login = async (data: UserLoginRequest) => {
-    return api.post<UserStateResponse>("/auth/login", data);
+    return api.post<UserStateResponse | AxiosError>("/auth/login", data);
 }
 
 export const logout = async () => {
     return api.post("/auth/logout");
 }
 
-export const register = async (data: MemberUserRegisterRequest | CompanyUserRegisterRequest) => {
+export const registerUser = async (data: MemberUserRegisterRequest | CompanyUserRegisterRequest) => {
     return api.post("/auth/register", data);
 }
 

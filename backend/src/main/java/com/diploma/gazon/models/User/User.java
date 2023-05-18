@@ -24,6 +24,7 @@ public abstract class User implements UserDetails {
     private String username;
     private String password;
     private String email;
+    private String name;
     private Boolean isEnabled;
     private UserRole userRole;
 
@@ -35,6 +36,7 @@ public abstract class User implements UserDetails {
         this(credentials.getUsername(),
                 credentials.getPassword(),
                 credentials.getEmail(),
+                credentials.getName(),
                 userRole,
                 additionalInfo);
     }
@@ -42,11 +44,13 @@ public abstract class User implements UserDetails {
     protected User(String username,
                 String password,
                 String email,
+                String name,
                 UserRole userRole,
                 UserAdditionalInfo additionalInfo) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.name = name;
         this.isEnabled = true;
         this.userRole = userRole;
         this.additionalInfo = additionalInfo;

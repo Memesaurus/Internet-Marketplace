@@ -1,7 +1,7 @@
 import React from 'react'
 import ProductImage from './ProductImage';
 import { Product } from '../api/apiTypes';
-import { AiOutlineMessage, AiFillStar } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai";
 
 type Props = {
     product: Product
@@ -34,13 +34,9 @@ const ProductCard = ({ product }: Props) => {
         <div className='d-flex gap-3 pt-1'>
             <div className='d-flex align-items-center'>
                 <AiFillStar style={counterStyle} />
-                {product.rating}
+                {product.rating.toFixed(2)}
             </div>
 
-            <div className='d-flex align-items-center'>
-                <AiOutlineMessage style={counterStyle} />
-                {"review cound idk maybe"}
-            </div>
         </div>
     </div>
   )

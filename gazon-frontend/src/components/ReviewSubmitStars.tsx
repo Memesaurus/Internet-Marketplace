@@ -26,14 +26,13 @@ const ReviewSubmitStars = (props: Props) => {
     const newStars = [...stars];
     let currentRating = key + 1;
 
-    for (let i = key - 1; i >= 0; i--) {
+    for (let i = 0; i < newStars.length; i++) {
       const props = newStars[i].props;
-      newStars[i] = <BsStarFill {...props} />;
-    }
-
-    for (let i = key + 1; i < newStars.length; i++) {
-      const props = newStars[i].props;
-      newStars[i] = <BsStar {...props} />;
+      if (i <= key) {
+        newStars[i] = (<BsStarFill {...props} />);
+      } else {
+        newStars[i] = (<BsStar {...props} />);
+      }
     }
 
     const clickedDivXY: DOMRect = event.target.getBoundingClientRect();
@@ -47,8 +46,6 @@ const ReviewSubmitStars = (props: Props) => {
     if (deltaX >= 0) {
       newStars[key] = <BsStarHalf {...clickedElProps} />;
       currentRating -= 0.5
-    } else {
-      newStars[key] = <BsStarFill {...clickedElProps} />
     }
 
     setStars(newStars);

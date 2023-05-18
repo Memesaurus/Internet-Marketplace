@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProduct } from "../api/apiRequests";
 import { Product, UserRole } from "../api/apiTypes";
 import { Button, Carousel, CarouselItem, Container } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
 import ProductImage from "./ProductImage";
 import ProductReview from "./ProductReview";
 import displayStars from "../utils/StarUtils";
@@ -14,7 +13,9 @@ import { useAppSelector } from "../redux/hooks";
 
 const ProductPage = () => {
   const { id } = useParams<string>();
-  const isLoggedIn = useAppSelector<UserRole | null>((state) => state.user.role)
+  const isLoggedIn = useAppSelector<UserRole | null>(
+    (state) => state.user.role
+  );
   const navigate = useNavigate();
   const intl = Intl.NumberFormat("ru-RU", {
     style: "currency",
@@ -23,11 +24,19 @@ const ProductPage = () => {
 
   const handleAddToCart = () => {
     console.log("amogus");
-  }
+  };
+
+  const getCompanyName = () => {
+    if (product.user.name !== null) {
+      return product.user.name;
+    }
+
+    return product.user.username;
+  };
 
   const WithLoginReviewForm = WithLogin({
     MemberComponent: LoginReviewForm,
-    adminDisplayBoth: true
+    adminDisplayBoth: true,
   });
 
   const productQuery = useQuery({
@@ -62,7 +71,7 @@ const ProductPage = () => {
         <Container className="d-flex flex-column gap-1 gap-lg-0">
           <div className="mt-2 mt-lg-0">
             <b>Производитель</b>
-            <div>{product.user.username}</div>
+            <div>{getCompanyName()}</div>
           </div>
 
           <div>{displayStars(product.rating)}</div>
@@ -79,7 +88,12 @@ const ProductPage = () => {
         </Container>
 
         <Container className="mt-2 mt-lg-0 d-flex flex-column">
-          <Button onClick={handleAddToCart} disabled={!product.isInStock || isLoggedIn === null}>В корзину</Button>
+          <Button
+            onClick={handleAddToCart}
+            disabled={!product.isInStock || isLoggedIn === null || isLoggedIn === UserRole.COMPANY}
+          >
+            В корзину
+          </Button>
           <div className="align-self-center">
             <b>{intl.format(product?.price)}</b>
           </div>
@@ -90,7 +104,7 @@ const ProductPage = () => {
         <div className="display-6 mb-2">Отзывы о товаре</div>
 
         <Container>
-          <WithLoginReviewForm/>
+          <WithLoginReviewForm />
 
           {product?.reviews?.map((review) => (
             <ProductReview key={review.id} review={review} />

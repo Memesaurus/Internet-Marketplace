@@ -58,6 +58,10 @@ public class UserService {
             throw new RoleNotAllowedException();
         }
 
+        if (userExists(newUserDTO)) {
+            throw new AlreadyExistsException("Пользователь уже существует");
+        }
+
         encodeNewUserPassword(newUserDTO);
 
         User newUser = UserFactory.getUser(role, newUserDTO);
@@ -69,6 +73,10 @@ public class UserService {
         }
 
         return jwtService.generateToken(newUser);
+    }
+
+    private Boolean userExists(NewUserDTO dto) {
+        return userRepository.existsByEmail(dto.getEmail()) || userRepository.existsByUsername(dto.getUsername());
     }
 
     private void encodeNewUserPassword(NewUserDTO newUserDTO) {

@@ -13,5 +13,6 @@ public class ProductResponseDTOHomePage {
     private Boolean isInStock;
 
     private Float rating;
+    private Integer reviewCount;
     private Set<String> images;
 }

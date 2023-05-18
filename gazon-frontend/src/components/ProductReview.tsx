@@ -15,6 +15,14 @@ const ProductReview = ({ review }: Props) => {
   const reviewTime = new Date(review.createdAt);
   const timeDiffirence: number = Date.now() - reviewTime.getTime();
 
+  const getNameOrUsername = () => {       
+    if (review.user.name !== null) {
+      return review.user.name;
+    }
+
+    return review.user.username
+  }
+
   const getRelativeTime = (time: number): string => {
     let diff = Math.round(time / (1000 * 60 * 60 * 24));
     let unit: Intl.RelativeTimeFormatUnit = "day";
@@ -44,7 +52,7 @@ const ProductReview = ({ review }: Props) => {
     <div className="mb-3">
       <div className="d-flex align-items-center">
         <div className="display-lg-6 flex-fill">
-          <b>{review.user.username}</b>
+          <b>{getNameOrUsername()}</b>
         </div>
 
         <OverlayTrigger placement="top" overlay={renderDateTooltip}>

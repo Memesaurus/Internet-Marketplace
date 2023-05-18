@@ -60,6 +60,7 @@ public class Product {
         }
 
         this.reviews.add(review);
+
         calculateRating();
     }
 

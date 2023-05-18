@@ -16,28 +16,25 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Document(collection = "members")
 public class Member extends User {
-    private String name;
     private String surname;
-    private String middleName;
+    private String middlename;
     private List<Item> memberCart;
     private Integer age;
 
     public Member(UserCredentials rawUserCredentials,
                   UserRole userRole,
                   UserAdditionalInfo additionalInfo,
-                  String name,
                   String surname,
-                  String middleName,
+                  String middlename,
                   Integer age) {
         super(rawUserCredentials, userRole, additionalInfo);
-        this.name = name;
         this.surname = surname;
-        this.middleName = middleName;
+        this.middlename = middlename;
         this.age = age;
         this.memberCart = new ArrayList<Item>();
     }
 
     public String getFullName() {
-        return String.join(" ", this.surname, this.name, this.middleName);
+        return String.join(" ", this.surname, this.middlename);
     }
 }

@@ -9,15 +9,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class NewUserDTO extends AuthDTO {
     private String email;
-    private UserAdditionalInfo userAdditionalInfo;
+    private UserAdditionalInfo additionalInfo;
     private UserRole role;
 
     //Shared user data
     private String name;
     //Company user data
     private String description;
-    //General Member data
-    private String middleName;
+    //Member user data
+    private String middlename;
     private String surname;
     private Integer age;
 }

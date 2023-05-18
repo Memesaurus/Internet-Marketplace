@@ -15,7 +15,7 @@ export interface UserLoginRequest extends UserAuthRequest {
 
 interface UserRegisterRequest extends UserAuthRequest{
     email: string;
-    additionaInfo: UserAdditionalInfo;
+    additionalInfo: UserAdditionalInfo;
     role: UserRole;
     name: string;
 }
@@ -25,8 +25,8 @@ export interface CompanyUserRegisterRequest extends UserRegisterRequest {
 }
 
 export interface MemberUserRegisterRequest extends UserLoginRequest {
-    middleName: string;
-    surName: string;
+    middlename: string;
+    surname: string;
     age: number;
 }
 
@@ -57,6 +57,7 @@ export interface User {
     username: string;
     email: string;
     additionalInfo: UserAdditionalInfo;
+    name: string;
 }
 
 export interface UserAdditionalInfo {
@@ -95,9 +96,10 @@ export interface Product {
     isInStock: boolean;
     rating: number;
     user: User;
+    reviewCount?: number;
     images: string[];
     tags: string[];
-    reviews: Review[];
+    reviews?: Review[];
 }
 
 export interface Review {

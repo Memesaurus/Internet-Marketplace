@@ -11,21 +11,23 @@ import com.diploma.gazon.models.User.UserRole;
 
 public interface UserFactory {
     static User getUser(UserRole role, NewUserDTO dto) {
-        UserCredentials userCredentials = new UserCredentials(dto.getUsername(), dto.getPassword(), dto.getEmail());
+        UserCredentials userCredentials = new UserCredentials(dto.getUsername(),
+                dto.getPassword(),
+                dto.getEmail(),
+                dto.getName());
         return switch (role) {
             case ADMIN -> new AdministratorMember(userCredentials,
                     role,
-                    dto.getUserAdditionalInfo());
+                    dto.getAdditionalInfo());
             case MEMBER -> new Member(userCredentials,
                     role,
-                    dto.getUserAdditionalInfo(),
-                    dto.getName(),
+                    dto.getAdditionalInfo(),
                     dto.getSurname(),
-                    dto.getMiddleName(),
+                    dto.getMiddlename(),
                     dto.getAge());
             case COMPANY -> new CompanyMember(userCredentials,
                     role,
-                    dto.getUserAdditionalInfo(),
+                    dto.getAdditionalInfo(),
                     dto.getName(),
                     dto.getDescription()
             );

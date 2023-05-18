@@ -13,16 +13,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @EqualsAndHashCode(callSuper = true)
 @Document(collection = "members")
 public class CompanyMember extends User {
-    private String companyName;
     private String companyDescription;
 
     public CompanyMember(UserCredentials rawUserCredentials,
                          UserRole userRole,
                          UserAdditionalInfo additionalInfo,
-                         String companyName,
+                         String name,
                          String companyDescription) {
         super(rawUserCredentials, userRole, additionalInfo);
-        this.companyName = companyName;
         this.companyDescription = companyDescription;
     }
 }
