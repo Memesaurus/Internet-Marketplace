@@ -3,6 +3,7 @@ package com.diploma.gazon.controllers;
 import com.diploma.gazon.DTO.request.ProductDTO;
 import com.diploma.gazon.DTO.response.ProductResponseDTO;
 import com.diploma.gazon.DTO.response.ProductResponseDTOHomePage;
+import com.diploma.gazon.services.ProductServices.ProductImageService;
 import com.diploma.gazon.services.ProductServices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductImageService productImageService;
 
     @GetMapping("/home")
     public List<ProductResponseDTOHomePage> getAllProductsSummary() {
@@ -32,8 +35,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public void addProduct(@RequestBody ProductDTO productDTO) {
-        productService.addProduct(productDTO);
+    public String addProduct(@RequestBody ProductDTO productDTO) {
+        return productService.addProduct(productDTO);
     }
 
 }

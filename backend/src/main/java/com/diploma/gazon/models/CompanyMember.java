@@ -14,11 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "members")
 public class CompanyMember extends User {
     private String companyDescription;
-
     public CompanyMember(UserCredentials rawUserCredentials,
                          UserRole userRole,
                          UserAdditionalInfo additionalInfo,
-                         String name,
                          String companyDescription) {
         super(rawUserCredentials, userRole, additionalInfo);
         this.companyDescription = companyDescription;

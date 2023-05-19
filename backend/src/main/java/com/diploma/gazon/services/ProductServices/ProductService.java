@@ -14,7 +14,6 @@ import com.diploma.gazon.services.UserServices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,14 +45,13 @@ public class ProductService {
         return productMapper.toProductResponseDto(products);
     }
 
-    public void addProduct(ProductDTO productDTO) {
+    public String addProduct(ProductDTO productDTO) {
         User currentUser = userService.getCurrentUser();
 
         if (!currentUser.isAdmin() && !isUserCompany(currentUser)) {
             throw new NotCompanyException("Выставлять продукты на сервис могут только компании");
         }
 
-        // TODO add mapstruct to project
         Product product = Product.builder()
                 .name(productDTO.getName())
                 .description(productDTO.getDescription())
@@ -63,6 +61,8 @@ public class ProductService {
                 .build();
 
         productRepository.save(product);
+
+        return product.getId();
     }
 
     public Boolean isUserCompany(User user) {

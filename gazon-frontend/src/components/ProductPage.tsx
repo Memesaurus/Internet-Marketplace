@@ -27,7 +27,7 @@ const ProductPage = () => {
   };
 
   const getCompanyName = () => {
-    if (product.user.name !== null) {
+    if (product.user.name) {
       return product.user.name;
     }
 

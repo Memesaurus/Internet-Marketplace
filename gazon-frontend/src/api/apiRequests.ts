@@ -53,11 +53,15 @@ export const getProduct = async (productId: string | undefined) => {
 }
 
 export const addProduct = async (data: ProductRequest) => {
-    return api.post("/products", data);
+    return api.post<string>("/products", data);
 }
 
-export const addImageToProduct = async (productId: string, image: ImageData) => {
-    return api.post(`/products/${productId}/images`, image);
+export const addImageToProduct = async (productId: string, image: FormData) => {
+    return api.post(`/products/${productId}/images`, image, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    });
 }
 
 export const getProductImage = (productId: string, imageId: string): string => {

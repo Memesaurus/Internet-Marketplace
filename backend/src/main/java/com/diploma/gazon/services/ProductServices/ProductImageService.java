@@ -34,9 +34,9 @@ public class ProductImageService {
     public void addImage(String productId, MultipartFile image) {
         Product product = productService.getOrElseThrow(productId);
 
-        if (isNotAuthorized(product)) {
-            throw new UnauthorizedException();
-        }
+//        if (isNotAuthorized(product)) {
+//            throw new UnauthorizedException();
+//        }
 
         Path dir = getOrCreateProductDir(productId);
         String imageName = ObjectId.get().toString();

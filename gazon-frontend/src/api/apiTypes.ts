@@ -46,6 +46,7 @@ export interface ProductRequest {
     description: string;
     price: number;
     tags: string[];
+    images: FileList;
 }
 
 export interface ReviewRequest {

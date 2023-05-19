@@ -11,7 +11,7 @@ import { registerUser } from "../api/apiRequests";
 import { AxiosError } from "axios";
 
 const RegisterPage = () => {
-  const [role, setRole] = useState<UserRole | null>(null);
+  const [role, setRole] = useState<UserRole>();
   const [error, setError] = useState<string>();
   const {
     handleSubmit,
