@@ -28,7 +28,6 @@ public interface UserFactory {
             case COMPANY -> new CompanyMember(userCredentials,
                     role,
                     dto.getAdditionalInfo(),
-                    dto.getName(),
                     dto.getDescription()
             );
         };
