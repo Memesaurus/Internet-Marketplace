@@ -18,7 +18,7 @@ import java.util.List;
 public class Member extends User {
     private String surname;
     private String middlename;
-    private List<Item> memberCart;
+    private List<CartItem> cart;
     private Integer age;
 
     public Member(UserCredentials rawUserCredentials,
@@ -31,7 +31,7 @@ public class Member extends User {
         this.surname = surname;
         this.middlename = middlename;
         this.age = age;
-        this.memberCart = new ArrayList<Item>();
+        this.cart = new ArrayList<>();
     }
 
     public String getFullName() {

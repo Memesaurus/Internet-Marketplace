@@ -1,5 +1,5 @@
 import { AxiosError } from "axios"
-import { CompanyUserRegisterRequest, MemberUserRegisterRequest, Order, OrderRequest, Product, ProductRequest, Review, ReviewRequest, UserLoginRequest, UserStateResponse } from "./apiTypes"
+import { CartItem, CompanyUserRegisterRequest, MemberUserRegisterRequest, Order, OrderRequest, Product, ProductRequest, Review, ReviewRequest, UserLoginRequest, UserStateResponse } from "./apiTypes"
 import api from "./axiosConfiguration"
 
 export const getCurrentState = async () => {
@@ -18,10 +18,6 @@ export const logout = async () => {
 
 export const registerUser = async (data: MemberUserRegisterRequest | CompanyUserRegisterRequest) => {
     return api.post("/auth/register", data);
-}
-
-export const placeOrder = async (data: OrderRequest) => {
-    return api.post("/orders", data);
 }
 
 export const getUserOrders = async () => {
@@ -80,4 +76,28 @@ export const addReviewToProduct = async (productId: string, data: ReviewRequest)
 
 export const patchReview = async (productId: string, data: ReviewRequest) => {
     return api.patch(`/products/${productId}/reviews`, data);
+}
+
+export const addToCart = async (productId: string) => {
+    return api.post("/cart/add", productId, {
+        headers: {
+            "Content-Type": "text/plain"
+        }
+    });
+}
+
+export const removeFromCart = async (productId: string) => {
+    return api.post("/cart/remove", productId, {
+        headers: {
+            "Content-Type": "text/plain"
+        }
+    });
+}
+
+export const getCart = async () => {
+    return api.get<CartItem[]>("/cart");
+}
+
+export const placeOrder = async () => {
+    return api.post("/order");
 }

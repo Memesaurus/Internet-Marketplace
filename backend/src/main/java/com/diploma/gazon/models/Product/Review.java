@@ -15,7 +15,7 @@ public class Review {
     private Instant createdAt;
     private Float rating;
     private String body;
-    @DBRef
+    @DBRef(lazy = true)
     private User user;
 
     public Review(Float rating, String body, User user) {

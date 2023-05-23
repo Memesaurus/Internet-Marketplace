@@ -1,6 +1,6 @@
 package com.diploma.gazon.controllers;
 
-import com.diploma.gazon.DTO.request.CartDTO;
+import com.diploma.gazon.DTO.request.CartItemDTO;
 import com.diploma.gazon.DTO.response.OrderResponseDTO;
 import com.diploma.gazon.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public OrderResponseDTO placeOrder(@RequestBody CartDTO cartDTO) {
-        return orderService.placeOrder(cartDTO);
+    public void placeOrder() {
+        orderService.placeOrder();
     }
 
     @PostMapping("/{orderId}/cancel")

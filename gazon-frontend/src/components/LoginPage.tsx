@@ -35,10 +35,7 @@ const LoginPage = () => {
 
       getCurrentState().then((response) => {
         dispatch(
-          setUser({
-            username: response.data.username,
-            role: response.data.role,
-          })
+          setUser(response.data)
         );
         navigate("/");
       });

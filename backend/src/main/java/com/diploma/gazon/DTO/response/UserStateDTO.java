@@ -1,6 +1,7 @@
 package com.diploma.gazon.DTO.response;
 
-import com.diploma.gazon.models.Item;
+import com.diploma.gazon.DTO.request.CartItemDTO;
+import com.diploma.gazon.models.CartItem;
 import com.diploma.gazon.models.User.UserRole;
 import lombok.Data;
 
@@ -10,5 +11,5 @@ import java.util.List;
 public class UserStateDTO {
     public String username;
     public UserRole role;
-    public List<Item> cart;
+    public Integer cartSize;
 }

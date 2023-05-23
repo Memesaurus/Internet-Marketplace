@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProduct } from "../api/apiRequests";
+import { addToCart, getProduct } from "../api/apiRequests";
 import { Product, UserRole } from "../api/apiTypes";
 import { Button, Carousel, CarouselItem, Container } from "react-bootstrap";
 import ProductImage from "./ProductImage";
@@ -9,13 +9,15 @@ import ProductReview from "./ProductReview";
 import displayStars from "../utils/StarUtils";
 import WithLogin from "./WithLogin";
 import LoginReviewForm from "./LoginReviewForm";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { increaseCartSize } from "../redux/userSlice";
 
 const ProductPage = () => {
   const { id } = useParams<string>();
   const isLoggedIn = useAppSelector<UserRole | null>(
     (state) => state.user.role
   );
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const intl = Intl.NumberFormat("ru-RU", {
     style: "currency",
@@ -23,15 +25,19 @@ const ProductPage = () => {
   });
 
   const handleAddToCart = () => {
-    console.log("amogus");
+    if (id) {
+      addToCart(id).then(() => {
+        dispatch(increaseCartSize())
+      });
+    }
   };
 
   const getCompanyName = () => {
-    if (product.user.name) {
-      return product.user.name;
+    if (data?.user.name) {
+      return data?.user.name;
     }
 
-    return product.user.username;
+    return data?.user.username;
   };
 
   const WithLoginReviewForm = WithLogin({
@@ -39,31 +45,30 @@ const ProductPage = () => {
     adminDisplayBoth: true,
   });
 
-  const productQuery = useQuery({
+  const { data, isLoading } = useQuery<Product>({
     queryKey: ["product", id],
-    queryFn: () => getProduct(id),
+    queryFn: () => getProduct(id).then((response) => response.data),
   });
 
-  if (productQuery.isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (!productQuery.data?.data) {
+  if (!data) {
     navigate("/404");
     return <div>404</div>;
   }
 
-  const product: Product = productQuery.data?.data;
 
   return (
     <>
-      <Container className="display-3 mb-3">{product?.name}</Container>
+      <Container className="display-3 mb-3">{data?.name}</Container>
 
       <Container className="d-flex flex-column flex-lg-row">
         <Carousel>
-          {product.images.map((image) => (
+          {data.images.map((image) => (
             <CarouselItem key={image}>
-              <ProductImage imageId={image} productId={product.id} size="BIG" />
+              <ProductImage imageId={image} productId={data.id} size="BIG" />
             </CarouselItem>
           ))}
         </Carousel>
@@ -74,28 +79,28 @@ const ProductPage = () => {
             <div>{getCompanyName()}</div>
           </div>
 
-          <div>{displayStars(product.rating)}</div>
+          <div>{displayStars(data.rating)}</div>
 
-          {!product.isInStock && <div>Нет в наличии</div>}
+          {!data.isInStock && <div>Нет в наличии</div>}
 
           <div className="mt-2">
             <div className="mb-2">
               <b>Описание</b>
             </div>
 
-            <div>{product?.description}</div>
+            <div>{data?.description}</div>
           </div>
         </Container>
 
         <Container className="mt-2 mt-lg-0 d-flex flex-column">
           <Button
             onClick={handleAddToCart}
-            disabled={!product.isInStock || isLoggedIn === null || isLoggedIn === UserRole.COMPANY}
+            disabled={!data.isInStock || isLoggedIn === null || isLoggedIn === UserRole.COMPANY}
           >
             В корзину
           </Button>
           <div className="align-self-center">
-            <b>{intl.format(product?.price)}</b>
+            <b>{intl.format(data?.price)}</b>
           </div>
         </Container>
       </Container>
@@ -106,7 +111,7 @@ const ProductPage = () => {
         <Container>
           <WithLoginReviewForm />
 
-          {product?.reviews?.map((review) => (
+          {data?.reviews?.map((review) => (
             <ProductReview key={review.id} review={review} />
           ))}
         </Container>

@@ -6,7 +6,7 @@ interface UserAuthRequest {
 export interface UserStateResponse {
     username: string;
     role: UserRole;
-    cart: CartItem[];
+    cartSize: number;
 }
 
 export interface UserLoginRequest extends UserAuthRequest {

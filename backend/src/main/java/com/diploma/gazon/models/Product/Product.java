@@ -32,7 +32,7 @@ public class Product {
     private Float rating;
     private Set<Review> reviews;
 
-    @DBRef
+    @DBRef(lazy = true)
     private User user;
 
     private Set<String> tags;

@@ -10,6 +10,7 @@ import com.diploma.gazon.exceptions.NotFoundException;
 import com.diploma.gazon.exceptions.RoleNotAllowedException;
 import com.diploma.gazon.exceptions.UnauthorizedException;
 import com.diploma.gazon.mappers.UserMapper;
+import com.diploma.gazon.models.Member;
 import com.diploma.gazon.models.User.User;
 import com.diploma.gazon.models.User.UserRole;
 import com.diploma.gazon.repositories.UserRepository;
@@ -23,7 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -36,7 +36,6 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserMapper userMapper;
 
@@ -96,7 +95,13 @@ public class UserService {
     public UserStateDTO getCurrentUserState() {
         User currentUser = getCurrentUser();
 
-        return userMapper.toUserStateDto(currentUser);
+        if (!(currentUser instanceof Member memberUser)) {
+            return userMapper.toUserStateDto(currentUser);
+        }
+
+        Integer cartSize = memberUser.getCart().size();
+
+        return userMapper.toUserStateDto(currentUser, cartSize);
     }
 
     public User getCurrentUser() {

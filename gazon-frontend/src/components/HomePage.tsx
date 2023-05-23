@@ -10,13 +10,12 @@ const HomePage = () => {
 
   useEffect(() => {
     getAllProducts().then((res) => setProducts(res.data));
-
   }, []);
 
   return (
     <Container className="d-flex flex-wrap gap-4 justify-content-center">
       {products?.map((product) => 
-      <Link key={product.id} to={`/product/${product.id}`}>
+      <Link className="text-decoration-none" key={product.id} to={`/product/${product.id}`}>
         <ProductCard product={product}/>
       </Link>
       )}

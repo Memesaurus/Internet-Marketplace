@@ -6,6 +6,7 @@ import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
 import ProductPage from './components/ProductPage'
 import NewProductPage from './components/NewProductPage'
+import CartPage from './components/CartPage'
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/product/:id' element={<ProductPage />} />
       <Route path='/product/new' element={<NewProductPage/>} />
+      <Route path='/cart' element={<CartPage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   )

@@ -15,5 +15,4 @@ public interface OrderMapper {
     OrderResponseDTO toOrderResponseDto(Order order);
 
     List<OrderResponseDTO> toOrderResponseDto(Iterable<Order> orders);
-
 }

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import logo_mini from "../assets/logo_mini.png";
 import Image from "react-bootstrap/Image"
-import SearchBar from "./SearchBar";
 import WithLogin from "./WithLogin";
 import NoLoginNavbar from "./NoLoginNavbar";
 import CompanyNavbar from "./CompanyNavbar";
@@ -33,9 +32,6 @@ const Header = () => {
             </Link>
         </NavbarBrand>
 
-        <div className="flex-grow-1">
-          <SearchBar />
-        </div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <WithLoginNavbar />

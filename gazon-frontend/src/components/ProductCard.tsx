@@ -21,7 +21,7 @@ const ProductCard = ({ product }: Props) => {
         </div>
 
         <div className='text-truncate' style={{width: "200px"}}>
-        {product.name}
+            {product.name}
         </div>
 
         {
