@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { getCart, placeOrder } from "../api/apiRequests";
 import { Button, Spinner } from "react-bootstrap";
 import { CartItem } from "../api/apiTypes";

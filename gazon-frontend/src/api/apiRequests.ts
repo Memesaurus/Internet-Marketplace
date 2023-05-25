@@ -49,7 +49,7 @@ export const getProduct = async (productId: string | undefined) => {
 }
 
 export const addProduct = async (data: ProductRequest) => {
-    return api.post<string>("/products", data);
+        return api.post<string>("/products", data);
 }
 
 export const addImageToProduct = async (productId: string, image: FormData) => {
@@ -99,5 +99,5 @@ export const getCart = async () => {
 }
 
 export const placeOrder = async () => {
-    return api.post("/order");
+    return api.post("/orders");
 }

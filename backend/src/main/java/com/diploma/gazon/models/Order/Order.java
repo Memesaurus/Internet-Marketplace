@@ -34,13 +34,14 @@ public class Order {
     private OrderStatus status;
 
     public Order(User user, List<CartItem> productOrders, Number price) {
-        this(user.getAdditionalInfo().getAddress().toString(), user, productOrders, price);
-    }
-
-    public Order(String deliveryAddress, User user, List<CartItem> productOrders, Number price) {
         this.created = Instant.now();
         this.cancellableUntil = Instant.now().plusSeconds(CANCELLATION_PERIOD);
-        this.deliveryAddress = deliveryAddress;
+
+        if (user.getAdditionalInfo() != null) {
+            this.deliveryAddress = user.getAdditionalInfo().getAddress().toString();
+        } else {
+            this.deliveryAddress = null;
+        }
         this.user = user;
         this.productOrders = productOrders;
         this.price = price;

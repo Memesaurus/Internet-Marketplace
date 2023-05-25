@@ -99,7 +99,7 @@ const RegisterPage = () => {
           <Form.Control
             autoComplete="off"
             placeholder="Город"
-            {...register("additionalInfo.address.country", { required: true })}
+            {...register("additionalInfo.address.city", { required: true })}
           />
         </Form.Group>
 
@@ -121,7 +121,7 @@ const RegisterPage = () => {
           <Form.Control
             autoComplete="off"
             placeholder="Дом"
-            {...register("additionalInfo.address.city", { required: true })}
+            {...register("additionalInfo.address.house", { required: true })}
           />
         </Form.Group>
 

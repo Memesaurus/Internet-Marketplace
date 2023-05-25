@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { addToCart, getProduct } from "../api/apiRequests";
 import { Product, UserRole } from "../api/apiTypes";
@@ -18,6 +18,7 @@ const ProductPage = () => {
     (state) => state.user.role
   );
   const dispatch = useAppDispatch();
+  const [isClicked, setIsClicked] = useState<boolean>(false);
   const navigate = useNavigate();
   const intl = Intl.NumberFormat("ru-RU", {
     style: "currency",
@@ -27,7 +28,10 @@ const ProductPage = () => {
   const handleAddToCart = () => {
     if (id) {
       addToCart(id).then(() => {
-        dispatch(increaseCartSize())
+        if (!isClicked) {
+          dispatch(increaseCartSize())
+          setIsClicked(true);
+        }
       });
     }
   };
