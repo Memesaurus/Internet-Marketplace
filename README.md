@@ -3,6 +3,6 @@
 
 Бэк написан на Spring boot (data, security), авторизация стейтлесс, с JWT токенами, которые передаются на фронт как куки, вместе с csrf и refresh токенами.
 
-Фронт на React, useForm, TypeScript, Redux-toolkit, axios, bootstrap. Стейт приложения хранится на сервере.
+Фронт на React, useForm, TypeScript, Redux-toolkit, axios, bootstrap. Стейт приложения хранится на сервере, при инишиал лаунче спа фетчится текущий стейт юзера
 
 БД - Mongo
